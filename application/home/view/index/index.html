@@ -31,6 +31,17 @@
           <b>6条网页设计配色原则,让你秒变配色高手</b><span>网页设计好不好看,颜色是毋庸置疑要排首位的,所以关于颜色的搭配技巧以及原则,对于每一个要学习web前端设计的新手来说,这都是一个重要的学习过程.在本教程中我们将与你分享...</span><a href="/" class="readmore">阅读原文</a></li>
       </ul>
     </div>
+    <div class="blank"></div>
+      <div class="layui-carousel" id="test1">
+        <div carousel-item>
+            <div><img src="__STATIC__/home/images/lb1.png"></div>
+            <div><img src="__STATIC__/home/images/lb2.png"></div>
+            <div><img src="__STATIC__/home/images/lb3.png"></div>
+            <div><img src="__STATIC__/home/images/lb4.png"></div>
+            <div><img src="__STATIC__/home/images/lb2.png"></div>
+        </div>
+    </div>
+      <!-- 条目中可以是任意内容，如：<img src=""> -->
     <div class="newblogs">
       <h2 class="hometitle">最新文章</h2>
       <ul id="list" style="display:none;">
@@ -132,4 +143,19 @@
     </div>
   </div>
 </article>
+
+<script>
+layui.use('carousel', function(){
+  var carousel = layui.carousel;
+  //建造实例
+  carousel.render({
+    elem: '#test1'
+    ,width: '100%' //设置容器宽度
+    ,height:'150px'
+    ,arrow: 'none' //切换箭头默认显示状态always（始终显示） hover（悬停显示）none（始终不显示）
+    ,indicator:'inside'//指示器位置 inside（容器内部）outside（容器外部）none（不显示）
+    ,anim: 'default' //轮播切换动画方式 default（左右切换）updown（上下切换）fade（渐隐渐显切换）
+  });
+});
+</script>
 

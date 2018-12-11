@@ -6,12 +6,12 @@
 				<input type="text" class="input-text" value="" placeholder="" id="articletitle" name="articletitle">
 			</div>
 		</div>
-		<div class="row cl">
+		<!--<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">简略标题：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder="" id="articletitle2" name="articletitle2">
 			</div>
-		</div>
+		</div>-->
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>分类栏目：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
@@ -19,8 +19,6 @@
 					<option value="0">全部栏目</option>
 					<option value="1">新闻资讯</option>
 					<option value="11">├行业动态</option>
-					<option value="12">├行业资讯</option>
-					<option value="13">├行业新闻</option>
 				</select>
 				</span> </div>
 		</div>
@@ -56,16 +54,16 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">文章作者：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="0" placeholder="" id="author" name="author">
+				<input type="text" class="input-text" value="admin" placeholder="" id="author" name="author">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">文章来源：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="0" placeholder="" id="sources" name="sources">
+				<input type="text" class="input-text" value="blog1688" placeholder="" id="sources" name="sources">
 			</div>
 		</div>
-		<div class="row cl">
+		<!--<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">允许评论：</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 				<div class="check-box">
@@ -86,7 +84,7 @@
 				<input type="text" onfocus="WdatePicker()" id="commentdatemax" name="commentdatemax" class="input-text Wdate">
 			</div>
 		</div>
-		<!--<div class="row cl">
+		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">使用独立模版：</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 				<div class="check-box">
@@ -115,7 +113,7 @@
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
 				<button onClick="article_save_submit();" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
-				<button onClick="article_save();" class="btn btn-secondary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
+				<!--<button onClick="article_save();" class="btn btn-secondary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>-->
 				<button onClick="removeIframe();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
 			</div>
 		</div>
@@ -145,9 +143,9 @@ $(function(){
 			articletitle:{
 				required:true,
 			},
-			articletitle2:{
-				required:true,
-			},
+//			articletitle2:{
+//				required:true,
+//			},
 			articlecolumn:{
 				required:true,
 			},
@@ -169,15 +167,15 @@ $(function(){
 			sources:{
 				required:true,
 			},
-			allowcomments:{
-				required:true,
-			},
-			commentdatemin:{
-				required:true,
-			},
-			commentdatemax:{
-				required:true,
-			},
+//			allowcomments:{
+//				required:true,
+//			},
+//			commentdatemin:{
+//				required:true,
+//			},
+//			commentdatemax:{
+//				required:true,
+//			},
 
 		},
 		onkeyup:false,
@@ -294,7 +292,6 @@ $(function(){
 var ue = UE.getEditor('editor');
 function article_save_submit()
 {
-    
     getArticleForm(function(data){
 //        data.id = channel_id
         $.ajax({
@@ -302,9 +299,9 @@ function article_save_submit()
             url:'/admin/article/add',
             data:data,
             success:function(res){
-                if(res.code==0){
+                if(res.code==1){
                     alert('更新成功,立即返回列表页~~~')
-                    window.location.href = '/admin/channel/index'
+                    window.location.href = '/admin/article/index'
                 }else{
                     alert(res.msg)
                 }
@@ -327,11 +324,11 @@ function getArticleForm(callback){
     var abstract = $("#abstract").val()
     var author = $("#author").val()
     var sources = $("#sources").val()
-    var allowcomments = $("input:checkbox[name='allowcomments']:checked").val()
-    var commentdatemin = $("#commentdatemin").val()
-    var commentdatemax = $("#commentdatemax").val()
-//    var editor = ue.getContent();
-    var editor = ue.getContentTxt();
+//    var allowcomments = $("input:checkbox[name='allowcomments']:checked").val()
+//    var commentdatemin = $("#commentdatemin").val()
+//    var commentdatemax = $("#commentdatemax").val()
+    var content = ue.getContent(); //获取带标签的文本
+//    var editor = ue.getContentTxt();//获取去除标签的文本
 
     var data = {
         articletitle:articletitle,
@@ -343,10 +340,10 @@ function getArticleForm(callback){
         abstract:abstract,
         author:author,
         sources:sources,
-        allowcomments:allowcomments,
-        commentdatemin:commentdatemin,
-        commentdatemax:commentdatemax,
-        editor:editor
+//        allowcomments:allowcomments,
+//        commentdatemin:commentdatemin,
+//        commentdatemax:commentdatemax,
+        content:content
     }
     callback(data)
 }

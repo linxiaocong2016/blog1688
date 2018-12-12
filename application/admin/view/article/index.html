@@ -1,18 +1,19 @@
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 资讯管理 <span class="c-gray en">&gt;</span> 资讯列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 文章管理 <span class="c-gray en">&gt;</span> 文章列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 	<div class="text-c">
 		<button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>
 	 <span class="select-box inline">
-		<select name="" class="select">
-			<option value="0">全部分类</option>
-			<option value="1">分类一</option>
-			<option value="2">分类二</option>
+		<select name="" id="status" class="select">
+			<option value="">全部</option>
+            {volist name="status" id="vo" key="k"}
+			<option value="{$k-1}">{$vo}</option>
+            {/volist}
 		</select>
 		</span> 日期范围：
 		<input type="text" onfocus="WdatePicker()" id="logmin" class="input-text Wdate" style="width:120px;">
 		-
 		<input type="text" onfocus="WdatePicker()" id="logmax" class="input-text Wdate" style="width:120px;">
-		<input type="text" name="" id="" placeholder=" 资讯名称" style="width:250px" class="input-text">
+		<input type="text" name="" id="title" placeholder=" 文章标题" style="width:250px" class="input-text">
 		<button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜资讯</button>
 	</div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" data-title="添加资讯" data-href="/admin/article/add" onclick="Hui_admin_tab(this)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加资讯</a></span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
@@ -24,6 +25,8 @@
 					<th width="80">ID</th>
 					<th>标题</th>
 					<th width="80">关键字</th>
+                    <th width="80">栏目</th>
+                    <th width="80">类型</th>
 					<th width="80">来源</th>
                     <th width="75">作者</th>
 					<th width="120">添加时间</th>
@@ -35,6 +38,7 @@
 
 			</tbody>
 		</table>
+        <i class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop" style="font-size: 100px; color: #1E9FFF;position:fixed;top:40%;left:50%;transform:translateX(-50%) translateY(-40%);display: none;"></i>
 	</div>
 </div>
 <div id="page"></div>
@@ -44,38 +48,26 @@
 <script type="text/javascript">
 $(function(){
     var totalPages = 1;	//总页码
+    var totalCount = 0;	//总页码
 
     // 获取列表
     var postData = {
         page:1,
-        pageSize:20,
+        pageSize:2,
     }
-    
     getArticleList(postData)
     
-    layui.use('laypage', function(){
-        var laypage = layui.laypage;
-        //执行一个laypage实例
-        laypage.render({
-            elem: 'page'
-            ,count: 70 //数据总数，从服务端得到
-            ,limit:10
-            ,jump: function(obj, first){
-              //obj包含了当前分页的所有参数，比如：
-              console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
-              console.log(obj.limit); //得到每页显示的条数
-              //首次不执行
-              if(!first){
-                //do something
-              }
-            }
-          });
-    });
+    //搜索查询
+	$('.text-c > .btn-success').on('click',function(){
+		loadSearchData()
+	})
+    
+    pageInit()
 
     //获取列表方法
     function getArticleList(data,callback){
         var callback = callback || function(){}
-        $('.loading').show().html('数据加载中....')
+        $('.layui-icon').show()
         $.ajax({
             url:'/admin/article/index',
             type:'POST',
@@ -85,8 +77,8 @@ $(function(){
                 if(res.code==1){
                     var list = res.data.list
                     totalPages = res.data.pageCount
+                    totalCount = res.data.count
                     if(list.length>0){
-                        $('.loading').hide()
                         var STR = '';
                         for(var i = 0; i<list.length; i++ ){
                             var str = '<tr class="text-c">'+
@@ -94,6 +86,8 @@ $(function(){
                                             '<td>'+ list[i].id+'</td>'+
                                             '<td>'+list[i].title+'</td>'+
                                             '<td>'+list[i].keyword+'</td>'+
+                                            '<td>'+list[i].column+'</td>'+
+                                            '<td>'+list[i].type+'</td>'+
                                             '<td>'+list[i].source+'</td>'+
                                             '<td>'+list[i].author+'</td>'+
                                             '<td>'+list[i].addtime+'</td>'+
@@ -106,21 +100,79 @@ $(function(){
                                         '</tr>';
                             STR += str
                         }
+                        $('.layui-icon').hide()
                         $('.mt-20 table tbody').html(STR)
                     }else{
-                        $('.mt-20 table tbody').html('')
-                        $('.loading').show().html('暂无数据~~！')
+                        $('.layui-icon').hide()
+                        $('.mt-20 table tbody').html('<tr><td colspan="11" style="text-align:center;">暂无数据~~！</td></tr>')
                     }
                     callback(res)
                 }else{
+                    $('.layui-icon').hide()
                     alert(res.msg)
                 }
             }
         })
-    }
-
-
+    } 
     
+    //搜索查询方法
+    function loadSearchData(){
+    	var status = $('#status').val()
+        var start_time = $('#logmin').val()
+        var end_time = $('#logmax').val()
+        var title = $('#title').val()
+		postData.page=1
+		if(status || start_time || end_time || title){	
+			postData.status=status
+            postData.start_time=start_time
+            postData.end_time=end_time
+            postData.title=title
+			getArticleList(postData,function(res){
+				if(res.code==1){
+					if(res.data.list.length==0){
+						$('.loading').show().html('没有相关搜索数据！')
+					}
+				}
+			})
+		}else{
+			postData.status=''
+            postData.start_time=''
+            postData.end_time=''
+            postData.title=''
+			getArticleList(postData,function(res){
+				$('.order-td').hide();
+			})
+		}
+		if(totalPages>1){
+			$('#page').show()
+		}
+		//再次执行，解决搜索之后无法删除问题
+        pageInit()
+    }
+    
+    function pageInit(){
+        layui.use('laypage', function(){
+            var laypage = layui.laypage;
+            //执行一个laypage实例
+            laypage.render({
+                elem: 'page'
+                ,count: totalCount //数据总数，从服务端得到
+                ,limit:postData.pageSize
+                ,theme: '#1E9FFF'
+                ,jump: function(obj, first){
+                    //obj包含了当前分页的所有参数，比如：
+                    console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                    console.log(obj.limit); //得到每页显示的条数
+                    //首次不执行
+                    if(!first){
+                        //do something
+                        postData.page = obj.curr;
+                        getArticleList(postData)
+                    }
+                }
+              });
+        });
+    }
 });
 
 /*资讯-添加*/

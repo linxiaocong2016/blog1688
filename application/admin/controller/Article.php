@@ -4,6 +4,7 @@ namespace app\admin\controller;
 use think\Db;
 use think\Controller;
 use think\Request;
+use think\Config;
 
 class Article extends Controller
 {
@@ -30,11 +31,11 @@ class Article extends Controller
             }
             if($start_time){
                 $start_time = strtotime($start_time . ' 00:00:00');
-                $where['addtime'] = ['>=',$start_time];
+                $where['addtime'][] = ['>=',$start_time];
             }
             if($end_time){
                 $end_time = strtotime($end_time . ' 00:00:00');
-                $where['addtime'] = ['<=',$end_time];
+                $where['addtime'][] = ['<=',$end_time];
             }
             if($title){
                 $where['title'] = $title;
@@ -77,6 +78,7 @@ class Article extends Controller
             $sources = Request::instance()->post('sources');
             $author = Request::instance()->post('author');
             $desc = Request::instance()->post('abstract');
+            $image = Request::instance()->post('image');
             
             $data = [
                 'title' => $title, 
@@ -88,6 +90,7 @@ class Article extends Controller
                 'source' => $sources,
                 'author' => $author,
                 'desc' => $desc,
+                'image' => $image,
                 'addtime' => time()
             ];
             $result = Db::table('article')->insert($data);
@@ -97,11 +100,56 @@ class Article extends Controller
                 $this->error('新增失败');
             }
         }
-        return view('add');
+        return view('add',['column' => $this->column, 'type' => $this->type]);
     }
     
     public function edit()
     {
+        if(Request::instance()->isPost()){
+            $id = Request::instance()->post('id');
+            $title = Request::instance()->post('articletitle');
+            $content = Request::instance()->post('content');
+            $column = Request::instance()->post('articlecolumn');
+            $type = Request::instance()->post('articletype');
+            $keyword = Request::instance()->post('keywords');
+            $sort = Request::instance()->post('articlesort');
+            $sources = Request::instance()->post('sources');
+            $author = Request::instance()->post('author');
+            $desc = Request::instance()->post('abstract');
+            $image = Request::instance()->post('image');
+            
+            $data = [
+                'title' => $title, 
+                'content' => $content,
+                'column' => $column,
+                'type' => $type,
+                'keyword' => $keyword,
+                'sort' => $sort,
+                'source' => $sources,
+                'author' => $author,
+                'desc' => $desc,
+                'image' => $image,
+            ];
+
+            $result = Db::table('article')->where('id', $id)->update($data);
+            if($result){
+                $this->success('更新成功');
+            } else {
+                $this->error('更新失败');
+            }
+        }
+        
+        $id = Request::instance()->get('id');
+        $articleInfo = Db::table('article')->where('id',$id)->find();
+//        echo '<pre />';print_r($id);exit;
+        return view('edit',['articleInfo' => $articleInfo, 'column' => $this->column, 'type' => $this->type, 'domain' => Config::get('oss.domain')]);
+    }
+    
+    public function del()
+    {
+        if(Request::instance()->isPost()){
+            
+        }
 
     }
 }

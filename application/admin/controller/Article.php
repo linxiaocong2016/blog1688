@@ -44,8 +44,8 @@ class Article extends Controller
             $count = Db::table('article')->where($where)->count();
             $pageCount = ceil($count / $pageSize);
             $offset = (($page - 1) * $pageSize);
-            $list = Db::table('article')->where($where)->limit($offset,$pageSize)->select();
-            
+            $list = Db::table('article')->where($where)->limit($offset,$pageSize)->order('id', 'desc')->select();
+
             if($list){
                 foreach ($list as $key => $val){
                     $list[$key]['status'] = $this->status[$val['status']];
@@ -54,7 +54,7 @@ class Article extends Controller
                     $list[$key]['addtime'] = date('Y-m-d H:i:s',$val['addtime']);
                 }
             }
-//            echo '<pre />';print_r($list);exit;
+            
             $data['list'] = $list;
             $data['count'] = $count;
             $data['pageCount'] = $pageCount;
@@ -141,15 +141,25 @@ class Article extends Controller
         
         $id = Request::instance()->get('id');
         $articleInfo = Db::table('article')->where('id',$id)->find();
-//        echo '<pre />';print_r($id);exit;
         return view('edit',['articleInfo' => $articleInfo, 'column' => $this->column, 'type' => $this->type, 'domain' => Config::get('oss.domain')]);
     }
     
     public function del()
     {
         if(Request::instance()->isPost()){
+            $ids = Request::instance()->post('ids',0);
+            $ids = ltrim($ids,',');
             
+            if(empty($ids))$this->error ('参数不完整');
+            
+            $result = Db::table('article')->whereIn('id', $ids)->delete();
+            if($result){
+                $this->success('删除成功！');
+            } else {
+                $this->error('删除失败！');
+            }
+        } else {
+            $this->error('非法请求！');
         }
-
     }
 }

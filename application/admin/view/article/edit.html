@@ -16,7 +16,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章标题：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="articletitle" name="articletitle">
+				<input type="text" class="input-text" value="{$articleInfo.title}" placeholder="" id="articletitle" name="articletitle">
 			</div>
 		</div>
 		<!--<div class="row cl">
@@ -30,7 +30,7 @@
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
 				<select name="articlecolumn" class="select" id="articlecolumn">
                     {volist name="column" id="vo" key="k"}
-					<option value="{$k-1}">{$vo}</option>
+					<option value="{$k-1}" {if $k-1 == $articleInfo.column} selected {/if}>{$vo}</option>
                     {/volist}
 				</select>
 				</span> </div>
@@ -40,7 +40,7 @@
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
 				<select name="articletype" class="select" id="articletype">
                     {volist name="type" id="vo" key="k"}
-					<option value="{$k-1}">{$vo}</option>
+					<option value="{$k-1}" {if $k-1 == $articleInfo.type} selected {/if}>{$vo}</option>
                     {/volist}
 				</select>
 				</span> </div>
@@ -48,32 +48,32 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">排序值：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="0" placeholder="" id="articlesort" name="articlesort">
+				<input type="text" class="input-text" value="{$articleInfo.sort}" placeholder="" id="articlesort" name="articlesort">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">关键词：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="keywords" name="keywords">
+				<input type="text" class="input-text" value="{$articleInfo.keyword}" placeholder="" id="keywords" name="keywords">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">文章摘要：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-                            <textarea name="abstract" id="abstract" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="$.Huitextarealength(this,200)"></textarea>
+                            <textarea name="abstract" id="abstract" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="$.Huitextarealength(this,200)">{$articleInfo.desc}</textarea>
 				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">文章作者：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="admin" placeholder="" id="author" name="author">
+				<input type="text" class="input-text" value="{$articleInfo.author}" placeholder="" id="author" name="author">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">文章来源：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="blog1688" placeholder="" id="sources" name="sources">
+				<input type="text" class="input-text" value="{$articleInfo.source}" placeholder="" id="sources" name="sources">
 			</div>
 		</div>
 		<!--<div class="row cl">
@@ -111,8 +111,13 @@
 			<label class="form-label col-xs-4 col-sm-2">缩略图：</label>
 			<div class="formControls col-xs-8 col-sm-9"> 
                     <div class="file uploadImage">
+                        {if $articleInfo['image'] != ''}
+                        <div class="add" style="display: none;">+</div>
+                        <div class="pic" style="display: block;"><img src="{$domain.$articleInfo.image}" alt="图片" data-imgurl="{$articleInfo.image}"></div>
+                        {else}
                         <div class="add">+</div>
                         <div class="pic"><img src=""  alt="图片"></div>
+                        {/if}
                         <input type="file" id="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
                     </div>
                     <p>尺寸400*350，大小1M以内，格式JPG、PNG</p>
@@ -212,13 +217,17 @@ $(function(){
     
 });
 var ue = UE.getEditor('editor');
+ue.ready(function() {
+    //异步回调
+    UE.getEditor('editor').execCommand('insertHtml', '{$articleInfo.content}');
+});
 function article_save_submit()
 {
     getArticleForm(function(data){
-//        data.id = channel_id
+        data.id = '{$articleInfo.id}';
         $.ajax({
             type:'POST',
-            url:'/admin/article/add',
+            url:'/admin/article/edit',
             data:data,
             success:function(res){
                 if(res.code==1){

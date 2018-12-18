@@ -1,0 +1,82 @@
+<style>
+    .center{
+        width: 25%;height: 450px;margin: auto;margin-top: 5em;margin-bottom: 0px;
+text-align: center;
+color: #FFF;
+    }
+   .center > .login{
+       width: 80%;height: 300px;background-color: #FFF;margin: auto;color: #000;
+               border-radius:10px;
+-moz-border-radius:10px; /* Old Firefox */
+box-shadow: 0px 0px 15px #545454;
+margin-top: 30px;
+   }
+    
+
+    
+</style>
+
+<body style="background-color: #0091e6;">
+     <div class="center">   
+         <h1>管理系统</h1>
+        <div class="login">   
+            
+            <form class="layui-form" action="" lay-filter="example" onsubmit="return false" >
+            <div class="layui-form-item" style="padding-top:50px;width: 90%;">
+              <label class="layui-form-label">用户名</label>
+              <div class="layui-input-block">
+                <input type="text" name="username" lay-verify="title" autocomplete="off" placeholder="请输入用户名" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-form-item" style="padding-top:20px;width: 90%;">
+              <label class="layui-form-label">密 码</label>
+              <div class="layui-input-block">
+                <input type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-form-item" style="padding-top:30px;>
+                <div class="layui-input-block">
+                  <button class="layui-btn" lay-submit="" onClick="login_submit();" lay-filter="demo1">登 陆</button>
+                  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+              </div>
+            </form>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    
+function login_submit()
+{
+    getKoginForm(function(data){
+        $.ajax({
+            type:'POST',
+            url:'/admin/login/index',
+            data:data,
+            success:function(res){
+                if(res.code==1){
+                    alert('登陆成功~~~')
+                    window.location.href = '/admin/index/index'
+                }else{
+                    alert(res.msg)
+                }
+            }
+        })
+
+    })
+}
+
+//添加渠道或者编辑渠道表单获取
+function getKoginForm(callback){
+    var callback = callback || function(){}
+
+    var username = $("input[name=username]").val()
+    var password = $('input[name=password]').val()
+
+    var data = {
+        username:username,
+        password:password,  
+    }
+    callback(data)
+}
+</script>

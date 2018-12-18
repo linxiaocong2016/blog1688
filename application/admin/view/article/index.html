@@ -16,7 +16,7 @@
 		<input type="text" name="" id="title" placeholder=" 文章标题" style="width:250px" class="input-text">
 		<button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜资讯</button>
 	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" data-title="添加资讯" data-href="/admin/article/add" onclick="Hui_admin_tab(this)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加资讯</a></span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="article_batch_del()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" data-title="添加资讯" data-href="/admin/article/add" onclick="Hui_admin_tab(this)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加资讯</a></span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
 	<div class="mt-20">
 		<table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
 			<thead>
@@ -82,7 +82,7 @@ $(function(){
                         var STR = '';
                         for(var i = 0; i<list.length; i++ ){
                             var str = '<tr class="text-c">'+
-                                            '<td><input type="checkbox" value="" name=""></td>'+
+                                            '<td><input type="checkbox" value="' + list[i].id + '" name="checkbox"></td>'+
                                             '<td>'+ list[i].id+'</td>'+
                                             '<td>'+list[i].title+'</td>'+
                                             '<td>'+list[i].keyword+'</td>'+
@@ -95,7 +95,7 @@ $(function(){
                                             '<td class="f-14 td-manage">'+
                                                 '<a style="text-decoration:none" href="javascript:;" title="审核">审核</a>'+
                                                 '<a style="text-decoration:none" class="ml-5" onClick="article_edit(\'文章编辑\',\'edit\',' + list[i].id + ')" href="javascript:;" title="编辑"><i class="Hui-iconfont">编辑</i></a>'+
-                                                '<a style="text-decoration:none" class="ml-5" onClick="article_del(this,\'10001\')" href="javascript:;" title="删除"><i class="Hui-iconfont">删除</i></a>'+
+                                                '<a style="text-decoration:none" class="ml-5" onClick="article_del(this,'+ list[i].id +')" href="javascript:;" title="删除"><i class="Hui-iconfont">删除</i></a>'+
                                             '</td>'+
                                         '</tr>';
                             STR += str
@@ -201,17 +201,55 @@ function article_edit(title,url,id,w,h){
 }
 
 /*资讯-删除*/
-function article_del(obj,id){alert(id);
+function article_del(obj,id){
     layui.use('layer', function(){ //独立版的layer无需执行这一句
         var layer = layui.layer; //独立版的layer无需执行这一句
         layer.confirm('确认要删除吗？',function(index){
             $.ajax({
                 type: 'POST',
-                url: '',
-                dataType: 'json',
+                url: 'del',
+//                dataType: 'json',
+                data:{ids:id},
                 success: function(data){
-                    $(obj).parents("tr").remove();
-                    layer.msg('已删除!',{icon:1,time:1000});
+                    if(data.code){
+                        $(obj).parents("tr").remove();
+                        layer.msg(data.msg,{icon:1,time:1000});
+                    }else{
+                        layer.msg(data.msg,{icon:7,time:1000});
+                    }
+                },
+                error:function(data) {
+                    console.log(data.msg);
+                },
+            });		
+        });
+    });
+}
+
+/*资讯-批量删除*/
+function article_batch_del(){
+    var ids = '';
+    $.each($('input[name=checkbox]:checked'),function(){
+        if($(this).val()){
+            ids += ','+ $(this).val();
+        }
+    });
+    
+    layui.use('layer', function(){ //独立版的layer无需执行这一句
+        var layer = layui.layer; //独立版的layer无需执行这一句
+        layer.confirm('确认要删除吗？',function(index){
+            $.ajax({
+                type: 'POST',
+                url: 'del',
+//                dataType: 'json',
+                data:{ids:ids},
+                success: function(data){
+                    if(data.code){
+                        $('input[name=checkbox]:checked').parents("tr").remove();
+                        layer.msg(data.msg,{icon:1,time:1000});
+                    }else{
+                        layer.msg(data.msg,{icon:7,time:1000});
+                    }
                 },
                 error:function(data) {
                     console.log(data.msg);

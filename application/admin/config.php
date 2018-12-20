@@ -12,5 +12,5 @@ return [
         'bucket' => 'blog1688',
         'domain' => 'http://image.blog1688.com',
     ],
-//'show_error_msg' => true,//显示错误信息
+'show_error_msg' => true,//显示错误信息
 ];

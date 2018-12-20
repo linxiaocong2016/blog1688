@@ -28,19 +28,13 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>分类栏目：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select name="articlecolumn" class="select" id="articlecolumn">
-                    {volist name="column" id="vo" key="k"}
-					<option value="{$k-1}" {if $k-1 == $articleInfo.column} selected {/if}>{$vo}</option>
-                    {/volist}
-				</select>
-				</span> </div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章类型：</label>
-			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select name="articletype" class="select" id="articletype">
-                    {volist name="type" id="vo" key="k"}
-					<option value="{$k-1}" {if $k-1 == $articleInfo.type} selected {/if}>{$vo}</option>
+				<select name="articlecolumn" class="select" id="articlecatid">
+                    {volist name="articleCate" id="vo" key="k"}
+                    {if $vo['level'] == 0}
+                    <option value="{$vo.id}" {if $vo.id == $articleInfo.cat_id} selected {/if}>{$vo.name}</option>
+                    {else}
+                    <option value="{$vo.id}" {if $vo.id == $articleInfo.cat_id} selected {/if}>├{$vo.name}</option>
+                    {/if}
                     {/volist}
 				</select>
 				</span> </div>
@@ -165,10 +159,7 @@ $(function(){
 //			articletitle2:{
 //				required:true,
 //			},
-			articlecolumn:{
-				required:true,
-			},
-			articletype:{
+			articlecatid:{
 				required:true,
 			},
 			articlesort:{
@@ -248,8 +239,7 @@ function getArticleForm(callback){
 
     var articletitle = $("#articletitle").val()
     var articletitle2 = $('#articletitle2').val()
-    var articlecolumn = $("#articlecolumn").val()
-    var articletype = $("#articletype").val()
+    var articlecatid = $("#articlecatid").val()
     var articlesort = $("#articlesort").val()
     var keywords = $("#keywords").val()
     var abstract = $("#abstract").val()
@@ -268,8 +258,7 @@ function getArticleForm(callback){
     var data = {
         articletitle:articletitle,
         articletitle2:articletitle2,  
-        articlecolumn:articlecolumn,  
-        articletype:articletype,
+        articlecatid:articlecatid,  
         articlesort:articlesort,
         keywords:keywords,
         abstract:abstract,

@@ -9,10 +9,6 @@ use think\Config;
 class Article extends Controller
 {
     public $status = [0 => '未发布', 1 => '已发布']; 
-    
-    public $column = [0 => '所有栏目显示',1 => '新闻资讯',2 => '├行业动态'];
-    
-    public $type = [0 => '全部类型', 1 => '个人博客文章', 2 => '帮助说明', 3 => '新闻资讯'];
 
 
     public function index()
@@ -41,16 +37,19 @@ class Article extends Controller
                 $where['title'] = $title;
             }
 
-            $count = Db::table('article')->where($where)->count();
+            $count = Db::table('article a')->where($where)->count();
             $pageCount = ceil($count / $pageSize);
             $offset = (($page - 1) * $pageSize);
-            $list = Db::table('article')->where($where)->limit($offset,$pageSize)->order('id', 'desc')->select();
-
+            $list = Db::table('article')
+                    ->alias('a')
+                    ->join('article_cate ac', 'ac.id = a.cat_id', 'LEFT')
+                    ->where($where)->limit($offset,$pageSize)
+                    ->field('a.*,ac.name')
+                    ->order('a.id', 'desc')->select();
+//echo '<pre />';print_r($list);exit;
             if($list){
                 foreach ($list as $key => $val){
                     $list[$key]['status'] = $this->status[$val['status']];
-                    $list[$key]['column'] = $this->column[$val['column']];
-                    $list[$key]['type'] = $this->type[$val['type']];
                     $list[$key]['addtime'] = date('Y-m-d H:i:s',$val['addtime']);
                 }
             }
@@ -71,8 +70,7 @@ class Article extends Controller
         if(Request::instance()->isPost()){
             $title = Request::instance()->post('articletitle');
             $content = Request::instance()->post('content');
-            $column = Request::instance()->post('articlecolumn');
-            $type = Request::instance()->post('articletype');
+            $cat_id = Request::instance()->post('articlecatid');
             $keyword = Request::instance()->post('keywords');
             $sort = Request::instance()->post('articlesort');
             $sources = Request::instance()->post('sources');
@@ -83,8 +81,7 @@ class Article extends Controller
             $data = [
                 'title' => $title, 
                 'content' => $content,
-                'column' => $column,
-                'type' => $type,
+                'cat_id' => $cat_id,
                 'keyword' => $keyword,
                 'sort' => $sort,
                 'source' => $sources,
@@ -100,7 +97,10 @@ class Article extends Controller
                 $this->error('新增失败');
             }
         }
-        return view('add',['column' => $this->column, 'type' => $this->type]);
+        
+        $articleCate = Db::table('article_cate')->select();
+        $articleCate = $this->getTree($articleCate);
+        return view('add',['articleCate' => $articleCate]);
     }
     
     public function edit()
@@ -109,8 +109,7 @@ class Article extends Controller
             $id = Request::instance()->post('id');
             $title = Request::instance()->post('articletitle');
             $content = Request::instance()->post('content');
-            $column = Request::instance()->post('articlecolumn');
-            $type = Request::instance()->post('articletype');
+            $cat_id = Request::instance()->post('articlecatid');
             $keyword = Request::instance()->post('keywords');
             $sort = Request::instance()->post('articlesort');
             $sources = Request::instance()->post('sources');
@@ -121,8 +120,7 @@ class Article extends Controller
             $data = [
                 'title' => $title, 
                 'content' => $content,
-                'column' => $column,
-                'type' => $type,
+                'cat_id' => $cat_id,
                 'keyword' => $keyword,
                 'sort' => $sort,
                 'source' => $sources,
@@ -141,7 +139,9 @@ class Article extends Controller
         
         $id = Request::instance()->get('id');
         $articleInfo = Db::table('article')->where('id',$id)->find();
-        return view('edit',['articleInfo' => $articleInfo, 'column' => $this->column, 'type' => $this->type, 'domain' => Config::get('oss.domain')]);
+        $articleCate = Db::table('article_cate')->select();
+        $articleCate = $this->getTree($articleCate);
+        return view('edit',['articleInfo' => $articleInfo, 'articleCate' => $articleCate, 'domain' => Config::get('oss.domain')]);
     }
     
     public function del()
@@ -161,5 +161,19 @@ class Article extends Controller
         } else {
             $this->error('非法请求！');
         }
+    }
+    
+    function getTree($array, $pid =0, $level = 0){
+        //声明静态数组,避免递归调用时,多次声明导致数组覆盖
+        static $list = [];
+        foreach ($array as $key => $value){
+            if ($value['pid'] == $pid){
+                $value['level'] = $level;
+                $list[] = $value;
+                unset($array[$key]);
+                $this->getTree($array, $value['id'], $level+1);
+            }
+        }
+        return $list;
     }
 }

@@ -9,9 +9,9 @@
   <div class="blank"></div>
   <div class="leftbox">
     <div class="tuijian">
-      <h2 class="hometitle"><span><a href="/">模板分享</a><a href="/">学无止境</a><a href="/">慢生活</a><a href="/">热门标签</a></span>特别推荐</h2>
+      <h2 class="hometitle"><!--<span><a href="/">模板分享</a><a href="/">学无止境</a><a href="/">慢生活</a><a href="#" onclick="recommendList(1)">热门标签</a></span>-->特别推荐</h2>
       <ul>
-        <li>
+        <!--<li>
           <div class="tpic"><img src="__STATIC__/home/images/b01.png"></div>
           <b>6条网页设计配色原则,让你秒变配色高手</b><span>网页设计好不好看,颜色是毋庸置疑要排首位的,所以关于颜色的搭配技巧以及原则,对于每一个要学习web前端设计的新手来说,这都是一个重要的学习过程.在本教程中我们将与你分享...</span><a href="/" class="readmore">阅读原文</a></li>
         <li>
@@ -28,24 +28,22 @@
           <b>美丽的茧</b><span>让世界拥有它的脚步，让我保有我的茧。当溃烂已极的心灵再不想做一丝一毫的思索时，就让我静静回到我的茧内，以回忆为睡榻，以悲哀为覆被，这是我唯一的美丽。...</span><a href="/" class="readmore">阅读原文</a></li>
         <li>
           <div class="tpic"><img src="__STATIC__/home/images/b01.png"></div>
-          <b>6条网页设计配色原则,让你秒变配色高手</b><span>网页设计好不好看,颜色是毋庸置疑要排首位的,所以关于颜色的搭配技巧以及原则,对于每一个要学习web前端设计的新手来说,这都是一个重要的学习过程.在本教程中我们将与你分享...</span><a href="/" class="readmore">阅读原文</a></li>
+          <b>6条网页设计配色原则,让你秒变配色高手</b><span>网页设计好不好看,颜色是毋庸置疑要排首位的,所以关于颜色的搭配技巧以及原则,对于每一个要学习web前端设计的新手来说,这都是一个重要的学习过程.在本教程中我们将与你分享...</span><a href="/" class="readmore">阅读原文</a>
+        </li>-->
       </ul>
     </div>
     <div class="blank"></div>
-      <div class="layui-carousel" id="test1">
+    <div class="layui-carousel" id="ad1">
         <div carousel-item>
-            <div><img src="__STATIC__/home/images/lb1.png"></div>
-            <div><img src="__STATIC__/home/images/lb2.png"></div>
-            <div><img src="__STATIC__/home/images/lb3.png"></div>
-            <div><img src="__STATIC__/home/images/lb4.png"></div>
-            <div><img src="__STATIC__/home/images/lb2.png"></div>
+            <div><img src="__STATIC__/home/images/ad_center.jpg"></div>
+            <div><img src="__STATIC__/home/images/ad_center.jpg"></div>
         </div>
     </div>
       <!-- 条目中可以是任意内容，如：<img src=""> -->
     <div class="newblogs">
       <h2 class="hometitle">最新文章</h2>
-      <ul id="list" style="display:none;">
-        <li>
+      <ul id="list">
+        <!--<li>
           <h3 class="blogtitle"><a href="/" target="_blank" >6条网页设计配色原则,让你秒变配色高手</a></h3>
           <div class="bloginfo"><span class="blogpic"><a href="/" title=""><img src="__STATIC__/home/images/t01.jpg"  /></a></span>
             <p>网页设计好不好看,颜色是毋庸置疑要排首位的,所以关于颜色的搭配技巧以及原则,对于每一个要学习web前端设计的新手来说,这都是一个重要的学习过程.在本教程中我们将与你分享...</p>
@@ -68,7 +66,7 @@
         </li>
         <li>
           <h3 class="blogtitle"><a href="/" target="_blank" >或许换一个活法,能让你走出阴霾</a></h3>
-          <div class="bloginfo"><!--<span class="blogpic"><a href="/" title=""><img src="images/b06.jpg"  /></a></span>-->
+          <div class="bloginfo"><span class="blogpic"><a href="/" title=""><img src="__STATIC__/home/images/b06.jpg"  /></a></span>
             <p>前段时间回成都,去见了几年未见的老友.一起吃了饭,还带我家宝宝去玩.我问她为什么这么久都还没有打算要孩子,她说,她有一段时间患上了忧郁症,很长的时间才走出来,我听她这么说,我都很惊讶!想问问她原因,可见她欲言又止的神情,我便不再主动问她.就听着她慢慢的说.其实主要的原因还是源自于工作和家庭,工作压力大,每天的程序代码,上级不停的催,她甚至连续好几个通宵的熬夜...</p>
           </div>
           <div class="autor"><span class="lm f_l"><a href="/">林晓聪个人博客</a></span><span class="dtime f_l">2014-02-19</span><span class="viewnum f_l">浏览（<a href="/">459</a>）</span><span class="pingl f_l">喜欢（<a href="/">30</a>）</span><span class="f_r"><a href="/" class="more">阅读原文</a></span></div>
@@ -80,21 +78,35 @@
           </div>
           <div class="autor"><span class="lm f_l"><a href="/">林晓聪个人博客</a></span><span class="dtime f_l">2014-02-19</span><span class="viewnum f_l">浏览（<a href="/">459</a>）</span><span class="pingl f_l">喜欢（<a href="/">30</a>）</span><span class="f_r"><a href="/" class="more">阅读原文</a></span></div>
         </li>
+        <li>
+          <h3 class="blogtitle"><a href="/" target="_blank" >即便是坑，我也想要拉你入伙！</a></h3>
+          <div class="bloginfo"><span class="blogpic"><a href="/" title=""><img src="__STATIC__/home/images/b07.jpg"  /></a></span>
+            <p>对于刚毕业的学生来说，想学习建网站，掌握一技之长，最简单的入门无非就是学会html和css，先前发表过一篇文章《如果要学习web前端开发，需要学习什么？》，如果你还不知道如何着手，请仔细阅读....7天的时间，入门是没有问题的，当然，如果你用心的话！...</p>
+          </div>
+          <div class="autor"><span class="lm f_l"><a href="/">林晓聪个人博客</a></span><span class="dtime f_l">2014-02-19</span><span class="viewnum f_l">浏览（<a href="/">459</a>）</span><span class="pingl f_l">喜欢（<a href="/">30</a>）</span><span class="f_r"><a href="/" class="more">阅读原文</a></span></div>
+        </li>-->
       </ul>
-      <ul id="list2">
-      </ul>
-      <script src="__STATIC__/home/js/page2.js"></script> 
+      <div style="position:relative;text-align: center;">
+            <div id="page"></div>
+      </div>
+      <i class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop" style="font-size: 100px; color: #1E9FFF;position:fixed;top:40%;left:50%;transform:translateX(-50%) translateY(-40%);display: none;"></i>
+    </div>
+    <div class="layui-carousel" id="ad4">
+        <div carousel-item>
+            <div><img src="__STATIC__/home/images/ad_center.jpg"></div>
+            <div><img src="__STATIC__/home/images/ad_center.jpg"></div>
+        </div>
     </div>
   </div>
   <div class="rightbox">
     <div class="aboutme">
       <h2 class="ab_title">关于我</h2>
-      <div class="avatar"><img src="__STATIC__/home/images/b04.jpg" /></div>
+      <div class="avatar"><img src="__STATIC__/home/images/b04.gif" /></div>
       <div class="ab_con">
         <p>网名：DanceSmile | 即步非烟</p>
-        <p>职业：Web前端设计师、网页设计 </p>
-        <p>籍贯：四川省—成都市</p>
-        <p>邮箱：dancesmiling@qq.com</p>
+        <p>职业：PHP高级工程师、架构师 </p>
+        <p>籍贯：广东省—广州市</p>
+        <p>邮箱：735207034@qq.com</p>
       </div>
     </div>
     <div class="blank"></div>
@@ -107,10 +119,17 @@
         <input name="Submit" class="input_submit" value="搜索" type="submit">
       </form>
     </div>
+    <div class="blank"></div>
+    <div class="layui-carousel" id="ad2">
+        <div carousel-item>
+            <div><img src="__STATIC__/home/images/ad_left.jpg"></div>
+            <div><img src="__STATIC__/home/images/ad_left.jpg"></div>
+        </div>
+    </div>
     <div class="paihang">
       <h2 class="ab_title"><a href="/">点击排行</a></h2>
       <ul>
-        <li><b><a href="/jstt/css3/2018-03-20/808.html" target="_blank">十条设计原则教你学会如何设计网页布局!...</a></b>
+        <!--<li><b><a href="/jstt/css3/2018-03-20/808.html" target="_blank">十条设计原则教你学会如何设计网页布局!...</a></b>
           <p><i><img src="__STATIC__/home/images/b01.png"></i>网页常见的布局有很多种,单列布局,多列布局.其中单列布局是国外很多网站比较常用的.咱们很多站长以及门户...</p>
         </li>
         <li><b><a href="/" target="_blank">教你怎样用欠费手机拨打电话</a></b>
@@ -124,19 +143,26 @@
         </li>
         <li><b><a href="/" target="_blank">你面对的是生活而不是手机</a></b>
           <p><i><img src="__STATIC__/home/images/b05.jpg"></i>最简单的入门无非就是学会html和css，先前发表过一篇文章...</p>
-        </li>
+        </li>-->
       </ul>
+    </div>
+    <div class="layui-carousel" id="ad3">
+        <div carousel-item>
+            <div><img src="__STATIC__/home/images/ad_left.jpg"></div>
+            <div><img src="__STATIC__/home/images/ad_left.jpg"></div>
+        </div>
     </div>
     <div class="links">
       <h2 class="ab_title">友情链接</h2>
       <ul>
-        <li><a href="/">林晓聪个人博客</a></li>
-        <li><a href="/">个人博客模板</a></li>
-        <li><a href="/">优秀个人博客</a></li>
+        <li><a href="/">林晓聪博客</a></li>
+        <li><a href="/">友链招募</a></li>
+        <li><a href="/">友链招募</a></li>
       </ul>
     </div>
+    
     <div class="weixin">
-      <h2 class="ab_title">微信关注</h2>
+      <h2 class="ab_title">微信</h2>
       <ul>
         <img src="__STATIC__/home/images/wx.jpg">
       </ul>
@@ -145,17 +171,199 @@
 </article>
 
 <script>
-layui.use('carousel', function(){
-  var carousel = layui.carousel;
-  //建造实例
+    var totalPages = 1;	//总页码
+    var totalCount = 0;	//总页码
+    // 获取列表
+    var postData = {
+        page:1,
+        pageSize:6,
+    }
+    recommendList(postData);
+    newList(postData);
+    rankingList(postData);
+    //推荐方法
+    function recommendList(data,callback){
+        var callback = callback || function(){}
+        data.pageSize = 6;
+        data.type = 'recommend';
+        $.ajax({
+            type: 'POST',
+            url: '/home/index/index',
+            data:data,
+            async:false,
+            success: function(res){
+                if(res.code){
+                    var list = res.data.list
+                    if(list.length>0){
+                        var str = '';
+                        for(var i = 0; i<list.length; i++ ){
+                            str += '<li>';
+                            str += '<div class="tpic"><img src="'+res.data.demoin+list[i].image+'"></div>';
+                            str += '<b>'+list[i].title+'</b><span>'+list[i].desc+'...</span><a href="/home/index/detail?id='+list[i].id+'" class="readmore">阅读原文</a></li>';
+                            str += '</li>';
+                        }
+                        $('.leftbox > .tuijian > ul').html(str);
+                    }else{
+                        $('.tuijian > ul').html('暂无数据~~！');
+                    }
+                    callback(res)
+                }else{
+                    alert(res.msg)
+                }
+            }
+        });
+    }
+    
+    //最新文章
+    function newList(data,callback){
+        var callback = callback || function(){}
+        $('.layui-icon').show()
+        data.type = '';
+        $.ajax({
+            url:'/home/index/index',
+            type:'POST',
+            data:data,
+            async:false,
+            success:function(res){
+                if(res.code==1){
+                    var list = res.data.list
+                    totalPages = res.data.pageCount
+                    totalCount = res.data.count
+                    if(list.length>0){
+                        var str = '';
+                        for(var i = 0; i<list.length; i++ ){
+                            str += '<li>';
+                            str += '<h3 class="blogtitle"><a href="/home/index/detail?id='+list[i].id+'" target="_blank" >'+list[i].title+'</a></h3>';
+                            str += '<div class="bloginfo">';
+                            str += '<span class="blogpic"><a href="/home/index/detail?id='+list[i].id+'" title=""><img src="'+res.data.demoin+list[i].image+'"  /></a></span>';
+                            str += '<p>'+list[i].new_desc+'...</p>';
+                            str += '</div>';
+                            str += '<div class="autor"><span class="lm f_l"><a href="/">林晓聪个人博客</a></span>';
+                            str += '<span class="dtime f_l">'+list[i].addtime+'</span>';
+                            str += '<span class="viewnum f_l">浏览（<a href="/">459</a>）</span>';
+                            str += '<span class="pingl f_l">喜欢（<a href="/">30</a>）</span><span class="f_r"><a href="/" class="more">阅读原文</a></span>';
+                            str += '</div>';
+                            str += '</li>';
+                        }
+                        $('.layui-icon').hide()
+                        $('.newblogs > ul').html(str)
+                    }else{
+                        $('.layui-icon').hide()
+                        $('#page').hide()
+                        $('.newblogs > ul').html('暂无数据~~！')
+                    }
+                    callback(res)
+                }else{
+                    $('.layui-icon').hide()
+                    alert(res.msg)
+                }
+            }
+        })
+    }
+    
+    //排行榜
+    function rankingList(data,callback){
+        var callback = callback || function(){}
+        data.pageSize = 6;
+        data.type = 'ranking';
+        $.ajax({
+            url:'/home/index/index',
+            type:'POST',
+            data:data,
+            async:false,
+            success:function(res){
+                if(res.code==1){
+                    var list = res.data.list
+                    if(list.length>0){
+                        var str = '';
+                        for(var i = 0; i<list.length; i++ ){
+                            str += '<li>';
+                            str += '<b><a href="/home/index/detail?id='+list[i].id+'" target="_blank">'+list[i].title+'...</a></b>';
+                            str += '<p><i><img src="'+res.data.demoin+list[i].image+'"></i>'+list[i].ranking_desc+'...</p>';
+                            str += '</li>';
+                        }
+                        $('.paihang > ul').html(str)
+                    }else{
+                        $('.paihang > ul').html('暂无数据~~！')
+                    }
+                    callback(res)
+                }else{
+                    alert(res.msg)
+                }
+            }
+        })
+    }
+
+    
+layui.use(['carousel','laypage', 'layer'], function(){
+  var carousel = layui.carousel
+  ,laypage = layui.laypage
+  ,layer = layui.layer;
+  
+  //左则上面
   carousel.render({
-    elem: '#test1'
-    ,width: '100%' //设置容器宽度
+    elem: '#ad1'
+    ,width: '100%' 
     ,height:'150px'
+    ,arrow: 'hover' //切换箭头默认显示状态always（始终显示） hover（悬停显示）none（始终不显示）
+    ,indicator:'none'//指示器位置 inside（容器内部）outside（容器外部）none（不显示）
+    ,anim: 'default' //轮播切换动画方式 default（左右切换）updown（上下切换）fade（渐隐渐显切换）
+    ,interval:5000
+  });
+  
+  //右则上面
+  carousel.render({
+    elem: '#ad2'
+    ,width: '100%' 
+    ,height:'200px'
     ,arrow: 'none' //切换箭头默认显示状态always（始终显示） hover（悬停显示）none（始终不显示）
     ,indicator:'inside'//指示器位置 inside（容器内部）outside（容器外部）none（不显示）
+    ,anim: 'fade' //轮播切换动画方式 default（左右切换）updown（上下切换）fade（渐隐渐显切换）
+    ,interval:5000
+  });
+  
+  //右则下面
+  carousel.render({
+    elem: '#ad3'
+    ,width: '100%' 
+    ,height:'200px'
+    ,arrow: 'hover' //切换箭头默认显示状态always（始终显示） hover（悬停显示）none（始终不显示）
+    ,indicator:'none'//指示器位置 inside（容器内部）outside（容器外部）none（不显示）
     ,anim: 'default' //轮播切换动画方式 default（左右切换）updown（上下切换）fade（渐隐渐显切换）
+    ,interval:5000
+  });
+  
+  //左则下面
+  carousel.render({
+    elem: '#ad4'
+    ,width: '100%' 
+    ,height:'155px'
+    ,arrow: 'none' //切换箭头默认显示状态always（始终显示） hover（悬停显示）none（始终不显示）
+    ,indicator:'inside'//指示器位置 inside（容器内部）outside（容器外部）none（不显示）
+    ,anim: 'fade' //轮播切换动画方式 default（左右切换）updown（上下切换）fade（渐隐渐显切换）
+    ,interval:5000
+  });
+  
+  //分页
+  laypage.render({
+    elem: 'page'
+    ,count: totalCount
+    ,limit:postData.pageSize
+    ,groups:3
+//    ,theme: '#1E9FFF'
+    ,jump: function(obj, first){
+        //obj包含了当前分页的所有参数，比如：
+        console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+        console.log(obj.limit); //得到每页显示的条数
+        //首次不执行
+        if(!first){
+            //do something
+            postData.page = obj.curr;
+            newList(postData);
+        }
+    }
   });
 });
+
 </script>
 

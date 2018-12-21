@@ -158,7 +158,7 @@ function recommendList(data,callback){
     data.type = 'recommend';
     $.ajax({
         type: 'POST',
-        url: '/home/index/index',
+        url: '/home/article/index',
         data:data,
         async:false,
         success: function(res){
@@ -191,7 +191,7 @@ function rankingList(data,callback){
     data.type = 'ranking';
     $.ajax({
         type: 'POST',
-        url: '/home/index/index',
+        url: '/home/article/index',
         data:data,
         async:false,
         success: function(res){

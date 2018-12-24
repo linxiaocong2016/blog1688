@@ -125,7 +125,7 @@
                         var str = '';
                         for(var i = 0; i<list.length; i++ ){
                             str += '<li>';
-                            str += '<div class="tpic"><img src="'+res.data.demoin+list[i].image+'"></div>';
+                            str += '<div class="tpic"><img src="'+res.data.demoin+list[i].image+'?x-oss-process=image/resize,m_fixed,h_100,w_207"></div>';
                             str += '<b>'+list[i].title+'</b><span>'+list[i].desc.substring(0,40)+'...</span><a href="/home/index/detail?id='+list[i].id+'" class="readmore">阅读原文</a></li>';
                             str += '</li>';
                         }
@@ -163,7 +163,7 @@
                             str += '<h3 class="blogtitle"><a href="/home/index/detail?id='+list[i].id+'" target="_blank" >'+list[i].title+'</a></h3>';
                             str += '<div class="bloginfo">';
                             if(list[i].image){
-                                str += '<span class="blogpic"><a href="/home/index/detail?id='+list[i].id+'" title="'+list[i].title+'"><img src="'+res.data.demoin+list[i].image+'"  /></a></span>';
+                                str += '<span class="blogpic"><a href="/home/index/detail?id='+list[i].id+'" title="'+list[i].title+'"><img src="'+res.data.demoin+list[i].image+'?x-oss-process=image/resize,m_fixed,h_100,w_225"  /></a></span>';
                             }
                             str += '<p>'+list[i].desc.substring(0,160)+'...</p>';
                             str += '</div>';
@@ -208,7 +208,7 @@
                         for(var i = 0; i<list.length; i++ ){
                             str += '<li>';
                             str += '<b><a href="/home/index/detail?id='+list[i].id+'" target="_blank">'+list[i].title+'...</a></b>';
-                            str += '<p><i><img src="'+res.data.demoin+list[i].image+'"></i>'+list[i].desc.substring(0,45)+'...</p>';
+                            str += '<p><i><img src="'+res.data.demoin+list[i].image+'?x-oss-process=image/resize,m_fixed,h_90,w_100"></i>'+list[i].desc.substring(0,45)+'...</p>';
                             str += '</li>';
                         }
                         $('.paihang > ul').html(str)

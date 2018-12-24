@@ -1,3 +1,8 @@
+<script type="text/javascript" charset="utf-8" src="__STATIC__/home/common/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__STATIC__/home/common/ueditor/ueditor.all.min.js"> </script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8" src="__STATIC__/home/common/ueditor/lang/zh-cn/zh-cn.js"></script>
 <div class="blank"></div>
 <article>
   <div class="leftbox">
@@ -23,8 +28,8 @@
        
       <div class="share">
          
-      <p class="diggit"><a href="JavaScript:makeRequest('/e/public/digg/?classid=3&amp;id=19&amp;dotop=1&amp;doajax=1&amp;ajaxarea=diggnum','EchoReturnedText','GET','');"> 很赞哦！ </a>(<b id="diggnum"><script type="text/javascript" src="/e/public/ViewClick/?classid=2&amp;id=20&amp;down=5"></script>{$articleInfo.clicks}</b>)</p>
-       <!--<p class="dasbox"><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">打赏本站</a></p>-->
+          <p class="diggit" onclick="like({$articleInfo.id})" style="margin-left: 35%"><a href=""> 很赞哦！ </a>(<b id="diggnum">{$articleInfo.like_number}</b>)</p>
+       <!--<p class="dasbox"><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">打赏本站</a></p>
       <div class="hide_box" style="display: none;"></div>
       <div class="shang_box" style="display: none;"> <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()" title="关闭">关闭</a>
         <div class="shang_tit">
@@ -50,10 +55,10 @@
     	$(".shang_box").fadeToggle();
     }
     </script> 
-      </div>
+      </div>-->
     </div>  
     <!--share end-->
-    <div class="zsm"><p>打赏本站，你说多少就多少</p><img src="__STATIC__/home/images/zsm.jpg"></div>
+    <!--<div class="zsm"><p>打赏本站，你说多少就多少</p><img src="__STATIC__/home/images/zsm.jpg"></div>-->
     </div>
     <!--infos end--> 
     
@@ -84,7 +89,9 @@
     <div class="news_pl">
       <h2>文章评论</h2>
       <ul>
+          暂无评论~~
       </ul>
+      <script id="editor" type="text/plain" style="width:100%;height:300px;"></script>
     </div>
   </div>
   <div class="rightbox">
@@ -216,6 +223,22 @@ function rankingList(data,callback){
         }
     });
 }
+
+function like(id){
+    $.ajax({
+        type: 'POST',
+        url: '/home/index/like',
+        data:{id:id},
+        async:false,
+        success: function(res){
+            if(res.code){
+                alert(res.msg);
+            }else{
+                alert(res.msg)
+            }
+        }
+    });
+}
     
 layui.use(['carousel','laypage', 'layer'], function(){
   var carousel = layui.carousel
@@ -240,4 +263,6 @@ layui.use(['carousel','laypage', 'layer'], function(){
     ,interval:5000
   });
 }); 
+
+var ue = UE.getEditor('editor');
 </script>

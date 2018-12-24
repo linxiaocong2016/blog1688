@@ -57,7 +57,7 @@ class Index extends Controller
         $id = Request::instance()->get('id');
         $ip = Request::instance()->ip();
         
-        $articleInfo = Db::table('article')->field('id,title,content,keyword,author,desc,image,addtime,true_clicks + false_clicks clicks')->where(['id'=>$id])->find();
+        $articleInfo = Db::table('article')->field('id,title,content,keyword,like_number,author,desc,image,addtime,true_clicks + false_clicks clicks')->where(['id'=>$id])->find();
 
         //获取上一篇文章
         $prevArticleInfo = Db::table('article')->field('id,title')->where(['id'=>['<',$articleInfo['id']]])->order(['id' => 'desc'])->find();
@@ -80,5 +80,16 @@ class Index extends Controller
         }
 
         return view('detail',['articleInfo' => $articleInfo]);
+    }
+    
+    public function like()
+    {
+        $id = Request::instance()->post('id'); 
+        $result = Db::table('article')->where('id', $id)->setInc('like_number', 1);
+        if($result){
+            $this->success('感谢支持！');
+        } else {
+            $this->success('支持失败，请稍后再试！');
+        }
     }
 }

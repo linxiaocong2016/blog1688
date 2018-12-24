@@ -6,8 +6,9 @@ use think\Controller;
 use think\Request;
 use think\Config;
 use think\Session;
+use think\image;
 
-class Image extends Controller
+class Images extends Controller
 {
     public function index()
     {

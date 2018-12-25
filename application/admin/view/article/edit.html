@@ -107,7 +107,7 @@
                     <div class="file uploadImage">
                         {if $articleInfo['image'] != ''}
                         <div class="add" style="display: none;">+</div>
-                        <div class="pic" style="display: block;"><img src="{$domain.$articleInfo.image}" alt="图片" data-imgurl="{$articleInfo.image}"></div>
+                        <div class="pic" style="display: block;"><img src="{$domain.$articleInfo.image}?x-oss-process=image/resize,m_fixed,h_175,w_200" alt="图片" data-imgurl="{$articleInfo.image}"></div>
                         {else}
                         <div class="add">+</div>
                         <div class="pic"><img src=""  alt="图片"></div>

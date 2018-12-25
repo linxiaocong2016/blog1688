@@ -18,26 +18,25 @@ class Images extends Controller
             $type = Request::instance()->post('type');
             
             $where = [];
-            $order = ['a.id' => 'desc'];
+            $order = ['i.id' => 'desc'];
             if($type == 'recommend'){
-                $where['a.is_recommend'] = 1;
+                $where['i.is_recommend'] = 1;
             }
             if($type == 'ranking'){
                 $order = ['clicks' => 'desc'];
             }
             
-            $count = Db::table('article')->alias('a')->where($where)->count();
+            $count = Db::table('image')->alias('i')->where($where)->count();
             $pageCount = ceil($count / $pageSize);
             $offset = (($page - 1) * $pageSize);
-            $list = Db::table('article')->alias('a')
-            ->join('article_cate ac', 'ac.id = a.cat_id', 'LEFT')
-            ->field('a.id,a.title,a.content,a.desc,a.image,a.like_number,a.addtime,a.true_clicks + a.false_clicks clicks,ac.name')
+            $list = Db::table('image')->alias('i')
+            ->join('image_cate ic', 'ic.id = i.cat_id', 'LEFT')
+            ->field('i.id,i.title,i.desc,i.image,i.addtime,ic.name')
             ->where($where)->limit($offset,$pageSize)
             ->order($order)->select();
             if($list){
                 foreach ($list as $key => $val){
                     $list[$key]['addtime'] = date('Y-m-d',$val['addtime']);
-                    $list[$key]['desc'] = strip_tags($val['content']);
                 }
             }
             

@@ -1,0 +1,228 @@
+<style>
+    /*添加缩略图片样式*/
+    .cl .formControls .file{
+        position:relative;width:200px;height:175px;border:1px dashed #ccc;overflow:hidden
+    }
+    .cl .formControls .file input[type=file]{
+        position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;cursor:pointer
+    }
+    .cl .formControls .file .add{
+        text-align:center;line-height:175px;font-size:40px;color:#ccc
+    }
+    .cl .formControls .file .pic{display:none}
+    .cl .formCenter .file .pic img{width:100%;height:100%}
+    /*批量添加图片样式*/
+    .cl .formControls .files{
+        position:relative;width:200px;height:175px;border:1px dashed #ccc;overflow:hidden;float: left;
+    }
+    .cl .formControls .files input[type=file]{
+        position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;cursor:pointer
+    }
+    .cl .formControls .files .add{
+        text-align:center;line-height:175px;font-size:40px;color:#ccc
+    }
+    .cl .formControls .files .pic{display:none}
+    .cl .formCenter .file .pic img{width:100%;height:100%}
+    /*批量添加加号样式*/
+    .cl .formControls .add_file{
+        position:relative;width:200px;height:175px;border:1px dashed #fff;overflow:hidden; cursor: pointer; float: left;
+    }
+    .cl .formControls .add_file .add{
+        text-align:center;line-height:175px;font-size:100px;color:red;
+    }
+</style>
+<div class="page-container">
+	<form class="form form-horizontal" id="form-article-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>图片标题：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$imageInfo.title}" placeholder="请输入图片标题" id="title" name="title">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>分类：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+                    <select name="" class="select" id="cat_id">
+                    {volist name="imageCate" id="vo" key="k"}
+                    {if $vo['level'] == 0}
+                    <option value="{$vo.id}" {if $vo.id == $imageInfo.cat_id} selected {/if}>{$vo.name}</option>
+                    {else}
+                    <option value="{$vo.id}" {if $vo.id == $imageInfo.cat_id} selected {/if}>├{$vo.name}</option>
+                    {/if}
+                    {/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">排序值：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$imageInfo.sort}" placeholder="" id="sort" name="sort">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">图片作者：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$imageInfo.author}" placeholder="" id="author" name="author">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">图片来源：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$imageInfo.source}" placeholder="" id="source" name="source">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">关键词：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$imageInfo.keyword}" placeholder="" id="keyword" name="keyword">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">图片摘要：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+                <textarea name="desc" cols="" rows="" id="desc" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="$.Huitextarealength(this,200)">{$imageInfo.desc}</textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">缩略图：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<div class="file uploadImage">
+                    {if $imageInfo['image'] != ''}
+                    <div class="add" style="display: none;">+</div>
+                    <div class="pic" style="display: block;"><img src="{$domain.$imageInfo.image}?x-oss-process=image/resize,m_fixed,h_175,w_200" alt="图片" data-imgurl="{$imageInfo.image}"></div>
+                    {else}
+                    <div class="add">+</div>
+                    <div class="pic"><img src=""  alt="图片"></div>
+                    {/if}
+                    <input type="file" id="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
+                </div>
+                <p>尺寸400*350，大小1M以内，格式JPG、PNG</p>
+			</div>
+		</div>
+        <div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">详情图：</label>
+			<div class="formControls col-xs-8 col-sm-9 uploadBox">
+                {if $imageInfo['image_detail'] != ''}
+                    {volist name="$imageInfo['image_detail']" id="vo" key="k"}
+                    <div class="files uploadImages">
+                        <div class="add" style="display: none;">+</div>
+                        <div class="pic" style="display: block;"><img src="{$domain.$vo}?x-oss-process=image/resize,m_fixed,h_175,w_200" alt="图片" data-imgurl="{$vo}"></div>
+                        <input type="file" id="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
+                    </div>
+                    {/volist}
+                {else}
+                <div class="files uploadImages">                   
+                    <div class="add">+</div>
+                    <div class="pic"><img src=""  alt="图片"></div>
+                    <input type="file" id="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
+                </div>
+                {/if}
+                <div class="add_file add_upload_file">
+                    <div class="add">+</div>
+                </div>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button onClick="images_save_submit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
+				<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__STATIC__/admin/common/lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="__STATIC__/admin/common/lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="__STATIC__/admin/common/lib/jquery.validation/1.14.0/messages_zh.js"></script> 
+<script type="text/javascript" src="__STATIC__/admin/common/lib/webuploader/0.1.5/webuploader.min.js"></script> 
+<script type="text/javascript">
+$(function(){
+    $('.uploadImage #file').on('change',function(){
+        getImgUrl({
+            _this:$(this)
+        })
+    });
+    
+    $('.uploadImages #file').on('change',function(){
+        getImgUrl({
+            _this:$(this)
+        })
+    });
+    
+    $('.add_upload_file').on('click',function(){
+        var html = '';
+        html += '<div class="files uploadImages">';
+        html += '<div class="add">+</div>';
+        html += '<div class="pic"><img src=""  alt="图片"></div>';
+        html += '<input type="file" id="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">';
+        html += '</div>';
+        $('.add_upload_file').before(html);
+        
+        $('.uploadImages #file').on('change',function(){
+            getImgUrl({
+                _this:$(this)
+            })
+        });
+    });
+});
+
+    function images_save_submit()
+    {
+        getImagesForm(function(data){
+            data.id = '{$imageInfo.id}';
+            $.ajax({
+                type:'POST',
+                url:'/admin/images/edit',
+                data:data,
+                success:function(res){
+                    if(res.code==1){
+                        alert(res.msg)
+                        window.location.href = '/admin/images/index'
+                    }else{
+                        alert(res.msg)
+                    }
+                }
+            })
+
+        })
+    }
+    
+    function getImagesForm(callback){
+        var callback = callback || function(){}
+
+        var title = $("#title").val()
+        var cat_id = $('#cat_id').val()
+        var sort = $("#sort").val()
+        var author = $("#author").val()
+        var source = $("#source").val()
+        var keyword = $("#keyword").val()
+        var desc = $("#desc").val()
+        var image = ''
+        if($('.uploadImage img').attr('data-imgurl')){
+            image = $('.uploadImage img').attr('data-imgurl')
+        }
+        var image_detail = [];
+        $('.uploadBox .uploadImages').each(function(){
+            if($(this).find('img').attr('data-imgurl')){
+                image_detail.push($(this).find('img').attr('data-imgurl'))
+            }
+        })
+        
+        var data = {
+            title:title,
+            cat_id:cat_id,  
+            sort:sort,  
+            author:author,
+            source:source,
+            keyword:keyword,
+            desc:desc,
+            image:image,
+            image_detail:image_detail
+        }
+        callback(data)
+    }
+</script>

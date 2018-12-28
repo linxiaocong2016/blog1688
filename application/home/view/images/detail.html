@@ -1,0 +1,193 @@
+<div class="blank"></div>
+<article>
+  <div class="leftbox">
+    <div class="infos">
+      <div class="newsview">
+        <h2 class="intitle">您现在的位置是：<a href="/">图片列表</a>&nbsp;&gt;&nbsp;<a href="/">图片详情</a></h2>
+        <h3 class="news_title">{$imageInfo.title}</h3>
+        <div class="news_author"><span class="au01">{$imageInfo.author}</span><span class="au02">{$imageInfo.addtime}</span><span class="au03">共<b>55</b>人围观</span></div>
+        {if $imageInfo && $imageInfo.keyword}
+        <div class="tags">
+            {volist name="imageInfo.keyword" id="vo" key="k"}
+            <a href="/">{$vo}</a> 
+            {/volist}
+        </div>
+        {/if}
+        {if $imageInfo && $imageInfo.image_detail}
+        <div class="news_infos">
+            {volist name="imageInfo.image_detail" id="vo" key="k"}
+            <img src="{$demoin}{$vo}" />
+            {/volist}
+        </div>
+        {/if}
+      </div>
+    </div>
+    
+    <div class="nextinfo">
+      {if $imageInfo && $imageInfo.nextImageInfo}
+      <p>上一篇：<a href="/home/images/detail?id={$imageInfo.nextImageInfo.id}" >{$imageInfo.nextImageInfo.title}</a></p>
+      {else}
+      <p>上一篇：<a href="/" >无</a></p>
+      {/if}
+      {if $imageInfo && $imageInfo.prevImageInfo}
+      <p>下一篇：<a href="/home/images/detail?id={$imageInfo.prevImageInfo.id}">{$imageInfo.prevImageInfo.title}</a></p>
+      {else}
+      <p>下一篇：<a href="/">无</a></p>
+      {/if}
+    </div>
+  </div>
+  <div class="rightbox">
+    <div class="search">
+      <form action="/e/search/index.php" method="post" name="searchform" id="searchform">
+        <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+        <input name="show" value="title" type="hidden">
+        <input name="tempid" value="1" type="hidden">
+        <input name="tbname" value="news" type="hidden">
+        <input name="Submit" class="input_submit" value="搜索" type="submit">
+      </form>
+    </div>
+    <div class="paihang recommend">
+      <h2 class="ab_title"><a href="/">本栏推荐</a></h2>
+      <ul>
+
+      </ul>
+    </div>
+    <div class="layui-carousel" id="ad1">
+        <div carousel-item>
+            <div><a href="/"><img src="__STATIC__/home/images/ad_left.jpg"></a></div>
+            <div><a href="/"><img src="__STATIC__/home/images/ad_left.jpg"></a></div>
+        </div>
+    </div>
+    <div class="paihang ranking">
+      <h2 class="ab_title"><a href="/">点击排行</a></h2>
+      <ul>
+        <li><b><a href="/" target="_blank">住在手机里的朋友</a></b>
+          <p>对于刚毕业的学生来说，想学习建网站，掌握一技之长，最简单的入门无学...</p>
+        </li>
+        <li><b><a href="/" target="_blank">教你怎样用欠费手机拨打电话</a></b>
+          <p>对于刚毕业的学生来说，想学习建网站，掌握一技之长，最简单的入门...</p>
+        </li>
+        <li><b><a href="/" target="_blank">原来以为，一个人的勇敢是，删掉他的手机号码</a></b>
+          <p>.先前发表过一篇文章《如果要学习web前端开发，需要学习什么？》</p>
+        </li>
+        <li><b><a href="/" target="_blank">手机的16个惊人小秘密，据说99.999%的人都不知</a></b>
+          <p>对于刚毕业的学生来说，.需要学习什么？》</p>
+        </li>
+        <li><b><a href="/" target="_blank">你面对的是生活而不是手机</a></b>
+          <p>.最简单的入门无非就是学会html和css，先前发表过一篇文章...</p>
+        </li>
+      </ul>
+      <!--<div class="ad"><img src="__STATIC__/home/images/ad01.jpg"></div>-->
+    </div>
+    <div class="layui-carousel" id="ad2">
+        <div carousel-item>
+            <div><a href="/"><img src="__STATIC__/home/images/ad_left.jpg"></a></div>
+            <div><a href="/"><img src="__STATIC__/home/images/ad_left.jpg"></a></div>
+        </div>
+    </div>
+    <div class="weixin">
+      <h2 class="ab_title">微信</h2>
+      <ul>
+        <img src="__STATIC__/home/images/wx.jpg">
+      </ul>
+    </div>
+  </div>
+</article>
+<script>
+var postData = {
+        page:1,
+        pageSize:6,
+    }
+recommendList(postData);
+rankingList(postData);
+//推荐方法
+function recommendList(data,callback){
+    var callback = callback || function(){}
+    data.pageSize = 6;
+    data.type = 'recommend';
+    $.ajax({
+        type: 'POST',
+        url: '/home/article/index',
+        data:data,
+        async:false,
+        success: function(res){
+            if(res.code){
+                var list = res.data.list
+                if(list.length>0){
+                    var str = '';
+                    for(var i = 0; i<list.length; i++ ){
+                        str += '<li>';
+                        str += '<b><a href="/home/index/detail?id='+list[i].id+'" target="_blank">'+list[i].title+'</a></b>';
+                        str += '<p>'+list[i].desc.substring(0,50)+'...</p>';
+                        str += '</li>';
+                    }
+                    $('.recommend > ul').html(str);
+                }else{
+                    $('.recommend > ul').html('暂无数据~~！');
+                }
+                callback(res)
+            }else{
+                alert(res.msg)
+            }
+        }
+    });
+}
+
+//排行榜方法
+function rankingList(data,callback){
+    var callback = callback || function(){}
+    data.pageSize = 6;
+    data.type = 'ranking';
+    $.ajax({
+        type: 'POST',
+        url: '/home/article/index',
+        data:data,
+        async:false,
+        success: function(res){
+            if(res.code){
+                var list = res.data.list
+                if(list.length>0){
+                    var str = '';
+                    for(var i = 0; i<list.length; i++ ){
+                        str += '<li>';
+                        str += '<b><a href="/home/index/detail?id='+list[i].id+'" target="_blank">'+list[i].title+'</a></b>';
+                        str += '<p>'+list[i].desc.substring(0,50)+'...</p>';
+                        str += '</li>';
+                    }
+                    $('.ranking > ul').html(str);
+                }else{
+                    $('.ranking > ul').html('暂无数据~~！');
+                }
+                callback(res)
+            }else{
+                alert(res.msg)
+            }
+        }
+    });
+}
+
+    
+layui.use(['carousel','laypage', 'layer'], function(){
+  var carousel = layui.carousel
+  
+  carousel.render({
+    elem: '#ad1'
+    ,width: '100%' 
+    ,height:'150px'
+    ,arrow: 'hover' //切换箭头默认显示状态always（始终显示） hover（悬停显示）none（始终不显示）
+    ,indicator:'none'//指示器位置 inside（容器内部）outside（容器外部）none（不显示）
+    ,anim: 'default' //轮播切换动画方式 default（左右切换）updown（上下切换）fade（渐隐渐显切换）
+    ,interval:5000
+  });
+  
+  carousel.render({
+    elem: '#ad2'
+    ,width: '100%' 
+    ,height:'200px'
+    ,arrow: 'hover' //切换箭头默认显示状态always（始终显示） hover（悬停显示）none（始终不显示）
+    ,indicator:'none'//指示器位置 inside（容器内部）outside（容器外部）none（不显示）
+    ,anim: 'default' //轮播切换动画方式 default（左右切换）updown（上下切换）fade（渐隐渐显切换）
+    ,interval:5000
+  });
+}); 
+</script>

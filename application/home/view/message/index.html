@@ -1,0 +1,246 @@
+<script type="text/javascript" charset="utf-8" src="__STATIC__/home/common/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__STATIC__/home/common/ueditor/ueditor.all.min.js"> </script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8" src="__STATIC__/home/common/ueditor/lang/zh-cn/zh-cn.js"></script>
+<style>
+    .newblogs > ul > li{
+        margin: 10px 10px 10px 10px;
+        padding: 20px 10px 20px 10px;
+        border-bottom: #ececec 1px solid;
+        list-style: none;
+    }
+    .newblogs > ul > li > .fbtime{
+        line-height: 50px;
+        padding-bottom: 10px;
+    }
+    .newblogs > ul > li > .fbtime > span{
+        float: right;
+        color: #999;
+    }
+    .newblogs > ul > li > .fbtime > img{
+        width:50px;
+        height: 50px;
+        float: left;
+        border-radius: 50px;
+    }
+    .newblogs > ul > li > .fbinfo{
+        widht:100%;
+        word-wrap: break-word;
+    }
+    .newblogs > ul > li > .fbinfo > p > *{
+       display:inline;
+    }
+    .newblogs > .plpost{
+        margin: 0px 10px 0px 10px;
+    }
+    .newblogs > .plpost > .saying{
+        line-height: 50px;
+        color: #a9a6a6;
+    }
+    .newblogs > .plpost > .saying > span{
+        float: right;
+    }
+    .newblogs > .plpost > .saying > span > a{
+        color: red;
+    }
+    
+    .newblogs > .plpost > .username{
+        line-height: 50px;
+    }
+    .newblogs > .plpost > .code{
+        line-height: 40px;
+        padding-bottom: 10px;
+    }
+    .newblogs > .plpost > .code > img{
+        width: 220px;
+        cursor:pointer;
+    }
+    .newblogs > .plpost > p > input{
+        height: 30px;
+    }
+    .newblogs > .plpost > p > span{
+        padding-right: 10px;
+    }
+    .newblogs > .plpost > .comment_button{
+        padding-top: 10px;
+        cursor:pointer;
+    }
+</style>
+<article>
+  <div class="leftbox">
+    <div class="newblogs">
+        <h2 class="hometitle">留言</h2>
+      <ul>
+
+      </ul>
+        <div onclick="moreCommentList()" id="loadMore" style="text-align: center;color: blue;cursor: pointer;font-size: 18px;display: none;">点击加载更多</div>
+      <div class="plpost">
+          <p class="saying"><!--<span><a href="/e/pl/?classid=4&amp;id=6">共有5条评论</a></span>-->来说两句吧...</p>
+          <!--<p class="username"><span>用户名</span><input type="text"></p>-->
+          <p class="code"><span>验证码</span><input name="captcha" type="text"><img style="width:220px;" id="code" onclick="Code()" src="{:captcha_src()}" alt="captcha" /></p>
+          <script id="editor" type="text/plain" style="width:100%;height:200px;"></script>
+          <p class="comment_button" onclick="comment_save_sumbit()"><img style="float:right;" src='__STATIC__/home/images/post-btn-hover.png'></p>
+      </div>
+    </div>
+  </div>
+  <div class="rightbox">
+  <div class="blank"></div>
+    <div class="aboutme">
+      <h2 class="ab_title">关于我</h2>
+      <div class="avatar"><img src="__STATIC__/home/images/b04.gif" /></div>
+      <div class="ab_con">
+        <p>网名：DanceSmile | 即步非烟</p>
+        <p>职业：PHP高级工程师、架构师 </p>
+        <p>籍贯：广东省—广州市</p>
+        <p>邮箱：735207034@qq.com</p>
+      </div>
+    </div>
+  <div class="blank"></div>
+    <div class="layui-carousel" id="ad1">
+        <div carousel-item>
+            <div><a href="/"><img src="__STATIC__/home/images/ad_left.jpg"></a></div>
+            <div><a href="/"><img src="__STATIC__/home/images/ad_left.jpg"></a></div>
+        </div>
+    </div>
+    <div class="weixin">
+      <h2 class="ab_title">微信关注</h2>
+      <ul>
+        <img src="__STATIC__/home/images/wx.jpg">
+      </ul>
+    </div>
+  </div>
+</article>
+
+<script>
+var postData = {
+        page:1,
+        pageSize:20,
+    }
+commentList(postData);
+
+//获取评论数据
+function commentList(data,callback){
+    var callback = callback || function(){}
+    $.ajax({
+        type: 'POST',
+        url: '/home/message/index',
+        data:data,
+        async:true,
+        success: function(res){
+            if(res.code){
+                var list = res.data.list
+                if(list.length>0){
+                    var str = '';
+                    for(var i = 0; i<list.length; i++ ){
+                        str += '<li>';
+                        str += '<p class="fbtime"><span>'+list[i].addtime+'</span> <img src="__STATIC__/home/images/comment.gif" />&nbsp;&nbsp;匿名</p>';
+                        str += '<div class="fbinfo">'+list[i].content+'</div>';
+                        str += '</li>';
+                    }
+                    $('.newblogs > ul').html(str);
+                    $('.newblogs > #loadMore').show();
+                }else{
+                    $('.newblogs > ul').html('暂无数据~~！');
+                }
+                callback(res)
+            }else{
+                alert(res.msg)
+            }
+        }
+    });
+}
+
+//加载更多评论数据
+function moreCommentList(){
+    postData.page += 1;
+    $('.newblogs > #loadMore').html('加载中。。。');
+    $.ajax({
+        type: 'POST',
+        url: '/home/message/index',
+        data:postData,
+        async:true,
+        success: function(res){
+            if(res.code){
+                var list = res.data.list
+                if(list.length>0){
+                    var str = '';
+                    for(var i = 0; i<list.length; i++ ){
+                        str += '<li>';
+                        str += '<p class="fbtime"><span>'+list[i].addtime+'</span> <img src="__STATIC__/home/images/comment.gif" />&nbsp;&nbsp;匿名</p>';
+                        str += '<div class="fbinfo">'+list[i].content+'</div>';
+                        str += '</li>';
+                    }
+                    $('.newblogs > ul').append(str);
+                    $('.newblogs > #loadMore').html('点击加载更多');
+                }else{
+                    $('.newblogs > #loadMore').html('没有更多数据了');
+                }
+            }else{
+                alert(res.msg)
+            }
+        }
+    });
+}
+
+
+    
+layui.use(['carousel','laypage', 'layer'], function(){
+  var carousel = layui.carousel
+  ,laypage = layui.laypage
+  ,layer = layui.layer;
+  
+  carousel.render({
+    elem: '#ad1'
+    ,width: '100%' 
+    ,height:'150px'
+    ,arrow: 'hover' //切换箭头默认显示状态always（始终显示） hover（悬停显示）none（始终不显示）
+    ,indicator:'none'//指示器位置 inside（容器内部）outside（容器外部）none（不显示）
+    ,anim: 'default' //轮播切换动画方式 default（左右切换）updown（上下切换）fade（渐隐渐显切换）
+    ,interval:5000
+  });
+
+});  
+
+window.UEDITOR_CONFIG.zIndex = 88;
+//实例化编辑器
+//建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+var ue = UE.getEditor('editor',{toolbars:[  
+        ['undo', 'redo', '|' ,
+            'bold', 'italic', 'underline', '|'
+            ,'fontsize','forecolor', '|', 'emotion']
+        ]});
+    
+//刷新验证码
+function Code() {
+    document.getElementById("code").src="{:captcha_src()}?"+Math.random();
+} 
+
+//提交留言
+function comment_save_sumbit(){
+    var captcha = $("input[name=captcha]").val();
+    var content = UE.getEditor('editor').getContent();
+    if(captcha == ''){
+        alert('请填写验证码！');return;
+    }
+    if(content == ''){
+        alert('评论内容不能为空！');return;
+    }
+    $.ajax({
+        type: 'POST',
+        url: '/home/message/add',
+        data:{captcha:captcha,content:content},
+        async:false,
+        success: function(res){
+            if(res.code){
+                alert(res.msg);
+                window.location.reload()
+            }else{
+                alert(res.msg)
+                Code()
+            }
+        }
+    });
+}
+
+</script>

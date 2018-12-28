@@ -55,30 +55,20 @@ class Images extends Controller
     public function detail()
     {
         $id = Request::instance()->get('id');
-        $ip = Request::instance()->ip();
         
-        $articleInfo = Db::table('article')->field('id,title,content,keyword,author,desc,image,addtime,true_clicks + false_clicks clicks')->where(['id'=>$id])->find();
-
-        //获取上一篇文章
-        $prevArticleInfo = Db::table('article')->field('id,title')->where(['id'=>['<',$articleInfo['id']]])->order(['id' => 'desc'])->find();
-        $articleInfo['prevArticleInfo'] = $prevArticleInfo;
-        //获取下一篇文章
-        $nextArticleInfo = Db::table('article')->field('id,title')->where(['id'=>['>',$articleInfo['id']]])->order(['id' => 'asc'])->find();
-        $articleInfo['nextArticleInfo'] = $nextArticleInfo;
-        //获取相关文章
-        $relatedArticleList = Db::table('article')->field('id,title')->where(['keyword' => ['like', "%{$articleInfo['keyword']}%"],'id' => ['<>', $articleInfo['id']]])->order(['id' => 'desc'])->limit(6)->select();
-        $articleInfo['relatedArticleList'] = $relatedArticleList;
+        $imageInfo = Db::table('image')->where(['id'=>$id])->find();
         
-        $articleInfo['addtime'] = date('Y-m-d', $articleInfo['addtime']);
-        $articleInfo['keyword'] = $articleInfo['keyword'] ? explode(',', $articleInfo['keyword']) : '';
+        //获取上一篇图片
+        $prevImageInfo = Db::table('image')->field('id,title')->where(['id'=>['<',$imageInfo['id']]])->order(['id' => 'desc'])->find();
+        $imageInfo['prevImageInfo'] = $prevImageInfo;
+        //获取下一篇图片
+        $nextImageInfo = Db::table('image')->field('id,title')->where(['id'=>['>',$imageInfo['id']]])->order(['id' => 'asc'])->find();
+        $imageInfo['nextImageInfo'] = $nextImageInfo;
         
-//        print_r(Session::get("ip$id"));exit;
-        //更新点击数
-        if(Session::get("ip$id") != $ip){
-            Session::set("ip$id",$ip);
-            Db::table('article')->where('id', $id)->setInc('true_clicks', 1);
-        }
-
-        return view('detail',['articleInfo' => $articleInfo]);
+        $imageInfo['addtime'] = date('Y-m-d', $imageInfo['addtime']);
+        $imageInfo['keyword'] = $imageInfo['keyword'] ? explode(',', $imageInfo['keyword']) : '';
+        $imageInfo['image_detail'] = json_decode($imageInfo['image_detail'],TRUE);
+//echo '<pre />';print_r($imageInfo);exit;
+        return view('detail',['imageInfo' => $imageInfo, 'demoin' => Config::get('oss.domain')]);
     }
 }

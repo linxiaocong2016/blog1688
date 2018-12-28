@@ -39,8 +39,9 @@ class Article extends Controller
             ->order($order)->select();
             if($list){
                 foreach ($list as $key => $val){
+                    $list[$key]['comment_total'] = Db::table('article_comment')->where(['article_id' => $val['id']])->count();
                     $list[$key]['addtime'] = date('Y-m-d',$val['addtime']);
-                    $list[$key]['desc'] = strip_tags($val['content']);
+                    $list[$key]['desc'] = mb_substr(strip_tags($val['content']),0,300,'utf-8');
                     unset($list[$key]['content']);
                 }
             }
@@ -62,7 +63,7 @@ class Article extends Controller
         $id = Request::instance()->get('id');
         $ip = Request::instance()->ip();
         
-        $articleInfo = Db::table('article')->field('id,title,content,keyword,author,desc,image,addtime,true_clicks + false_clicks clicks')->where(['id'=>$id])->find();
+        $articleInfo = Db::table('article')->field('id,title,content,keyword,like_number,author,desc,image,addtime,true_clicks + false_clicks clicks')->where(['id'=>$id])->find();
 
         //获取上一篇文章
         $prevArticleInfo = Db::table('article')->field('id,title')->where(['id'=>['<',$articleInfo['id']]])->order(['id' => 'desc'])->find();
@@ -83,7 +84,49 @@ class Article extends Controller
             Session::set("ip$id",$ip);
             Db::table('article')->where('id', $id)->setInc('true_clicks', 1);
         }
+        
+        //获取评论内容
+        $commentList = Db::table('article_comment')->where(["article_id" => $id])->limit(0,20)->order(['id' => 'desc'])->select();
+        if($commentList){
+            foreach ($commentList as $key => $val){
+                $commentList[$key]['addtime'] = date('Y-m-d',$val['addtime']);
+            }
+        }
 
-        return view('detail',['articleInfo' => $articleInfo]);
+        return view('detail',['articleInfo' => $articleInfo,'commentList' => $commentList]);
+    }
+    
+    public function comment()
+    {
+        if(Request::instance()->isPost()){
+            $article_id = Request::instance()->post('article_id',0);
+            $captcha = Request::instance()->post('captcha');
+            $content = Request::instance()->post('content');
+            $ip = Request::instance()->ip();
+            $ip = ip2long($ip);
+            
+            if(!captcha_check($captcha))$this->error ('验证码不正确，请重新输入');
+
+            //判断一天只能评论10条
+            $date = date('Y-m-d',time());
+            $time = strtotime($date.' 00:00:00');
+            $commentLimit = Db::table('article_comment')->where(['article_id' => $article_id, "ip" => $ip, 'addtime' => ['>=',$time]])->count();
+            if($commentLimit >= 5)$this->error ('同一篇文章一天只能评论5次哦');
+
+            $data = [
+                'article_id' => $article_id, 
+                'content' => $content,
+                'ip' => $ip,
+                'addtime' => time()
+            ];
+            $result = Db::table('article_comment')->insert($data);
+            if($result){
+                //获取最后插入的ID
+//                $lastId = Db::table('article_comment')->getLastInsID();
+                $this->success('评论成功');
+            } else {
+                $this->error('评论失败');
+            }
+        }
     }
 }

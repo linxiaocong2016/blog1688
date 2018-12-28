@@ -6,6 +6,7 @@ use think\Controller;
 use think\Request;
 use think\Config;
 use think\Session;
+use think\captcha\Captcha;
 
 class Index extends Controller
 {
@@ -78,8 +79,16 @@ class Index extends Controller
             Session::set("ip$id",$ip);
             Db::table('article')->where('id', $id)->setInc('true_clicks', 1);
         }
+        
+        //获取评论内容
+        $commentList = Db::table('article_comment')->where(["article_id" => $id])->limit(0,20)->order(['id' => 'desc'])->select();
+        if($commentList){
+            foreach ($commentList as $key => $val){
+                $commentList[$key]['addtime'] = date('Y-m-d',$val['addtime']);
+            }
+        }
 
-        return view('detail',['articleInfo' => $articleInfo]);
+        return view('detail',['articleInfo' => $articleInfo,'commentList' => $commentList]);
     }
     
     public function like()

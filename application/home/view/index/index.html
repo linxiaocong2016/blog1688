@@ -106,8 +106,32 @@
         pageSize:6,
     }
     recommendList(postData);
-    newList(postData);
     rankingList(postData);
+    newList(postData,function(){
+        layui.use(['laypage'], function(){
+            var laypage = layui.laypage
+            //分页
+            laypage.render({
+              elem: 'page'
+              ,count: totalCount
+              ,limit:postData.pageSize
+              ,groups:3
+          //    ,theme: '#1E9FFF'
+              ,jump: function(obj, first){
+                  //obj包含了当前分页的所有参数，比如：
+                  console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                  console.log(obj.limit); //得到每页显示的条数
+                  //首次不执行
+                  if(!first){
+                      //do something
+                      postData.page = obj.curr;
+                      newList(postData);
+                  }
+              }
+            });
+        });
+    });
+    
     //推荐方法
     function recommendList(data,callback){
         var callback = callback || function(){}
@@ -117,7 +141,7 @@
             type: 'POST',
             url: '/home/index/index',
             data:data,
-            async:false,
+            async:true,
             success: function(res){
                 if(res.code){
                     var list = res.data.list
@@ -145,12 +169,13 @@
     function newList(data,callback){
         var callback = callback || function(){}
         $('.layui-icon').show()
+        data.pageSize = 8;
         data.type = '';
         $.ajax({
             url:'/home/index/index',
             type:'POST',
             data:data,
-            async:false,
+            async:true,
             success:function(res){
                 if(res.code==1){
                     var list = res.data.list
@@ -199,7 +224,7 @@
             url:'/home/index/index',
             type:'POST',
             data:data,
-            async:false,
+            async:true,
             success:function(res){
                 if(res.code==1){
                     var list = res.data.list
@@ -272,25 +297,6 @@ layui.use(['carousel','laypage', 'layer'], function(){
     ,interval:5000
   });
   
-  //分页
-  laypage.render({
-    elem: 'page'
-    ,count: totalCount
-    ,limit:postData.pageSize
-    ,groups:3
-//    ,theme: '#1E9FFF'
-    ,jump: function(obj, first){
-        //obj包含了当前分页的所有参数，比如：
-        console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
-        console.log(obj.limit); //得到每页显示的条数
-        //首次不执行
-        if(!first){
-            //do something
-            postData.page = obj.curr;
-            newList(postData);
-        }
-    }
-  });
 });
 
 </script>

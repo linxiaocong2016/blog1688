@@ -7,7 +7,7 @@
                 <a href="#" onclick="CatArticleList({$vo.id})">{$vo.name}</a>
                 {/volist}
             </span>
-            文章
+            小说
         </h2>
       <ul>
         <!--<li>
@@ -105,7 +105,7 @@ function articleList(data,callback){
     $('.layui-icon').show()
     data.type = '';
     $.ajax({
-        url:'/home/article/index',
+        url:'/home/fiction/index',
         type:'POST',
         data:data,
         async:false,
@@ -118,10 +118,10 @@ function articleList(data,callback){
                     var str = '';
                     for(var i = 0; i<list.length; i++ ){
                         str += '<li>';
-                        str += '<h3 class="blogtitle"><a href="/home/article/detail?id='+list[i].id+'" target="_blank" >'+list[i].title+'</a></h3>';
+                        str += '<h3 class="blogtitle"><a href="/home/fiction/detail?id='+list[i].id+'" target="_blank" >'+list[i].title+'</a></h3>';
                         str += '<div class="bloginfo">';
                         if(list[i].image){
-                            str += '<span class="blogpic"><a href="/home/article/detail?id='+list[i].id+'" title="'+list[i].title+'"><img src="'+res.data.demoin+list[i].image+'"  /></a></span>';
+                            str += '<span class="blogpic"><a href="/home/fiction/detail?id='+list[i].id+'" title="'+list[i].title+'"><img src="'+res.data.demoin+list[i].image+'"  /></a></span>';
                         }
                         str += '<p>'+list[i].desc.substring(0,160)+'...</p>';
                         str += '</div>';
@@ -130,7 +130,7 @@ function articleList(data,callback){
                         str += '<span class="dtime f_l">'+list[i].addtime+'</span>';
                         str += '<span class="viewnum f_l">浏览（<a href="/">'+list[i].clicks+'</a>）</span>';
                         str += '<span class="pingl f_l">评论（<a href="/">'+list[i].comment_total+'</a>）</span>';
-                        str += '<span class="f_r"><a href="/home/article/detail?id='+list[i].id+'" class="more">阅读原文>></a></span>';
+                        str += '<span class="f_r"><a href="/home/fiction/detail?id='+list[i].id+'" class="more">阅读原文>></a></span>';
                         str += '</div>';
                         str += '</li>';
                     }
@@ -155,7 +155,7 @@ function recommendList(callback){
     var callback = callback || function(){}
     $.ajax({
         type: 'POST',
-        url: '/home/article/index',
+        url: '/home/fiction/index',
         data:{pageSize:5,type:'recommend'},
         async:false,
         success: function(res){
@@ -186,7 +186,7 @@ function rankingList(callback){
     var callback = callback || function(){}
     $.ajax({
         type: 'POST',
-        url: '/home/article/index',
+        url: '/home/fiction/index',
         data:{pageSize:5,type:'ranking'},
         async:false,
         success: function(res){

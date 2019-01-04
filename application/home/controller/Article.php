@@ -9,6 +9,9 @@ use think\Session;
 
 class Article extends Controller
 {
+    public $check = 6;
+
+
     public function index()
     {
         if(Request::instance()->isPost()){
@@ -17,7 +20,8 @@ class Article extends Controller
             $type = Request::instance()->post('type');
             $cat_id = Request::instance()->post('cat_id');
             
-            $where = ['cat_id' => ['<>',1]];
+            $where = ['ac.id' => 1];
+            $whereOr = ['ac.pid' => 1];
             $order = ['a.id' => 'desc'];
             if($type == 'recommend'){
                 $where['a.is_recommend'] = 1;
@@ -29,14 +33,20 @@ class Article extends Controller
                 $where['a.cat_id'] = $cat_id;
             }
             
-            $count = Db::table('article')->alias('a')->where($where)->count();
+            $count = Db::table('article')->alias('a')
+            ->join('article_cate ac', 'ac.id = a.cat_id', 'LEFT')
+            ->where($where)->whereOr($whereOr)->count();
+            
             $pageCount = ceil($count / $pageSize);
             $offset = (($page - 1) * $pageSize);
+            
             $list = Db::table('article')->alias('a')
             ->join('article_cate ac', 'ac.id = a.cat_id', 'LEFT')
             ->field('a.id,a.title,a.content,a.desc,a.image,a.like_number,a.addtime,a.true_clicks + a.false_clicks clicks,ac.name')
             ->where($where)->limit($offset,$pageSize)
+            ->whereOr($whereOr)
             ->order($order)->select();
+            
             if($list){
                 foreach ($list as $key => $val){
                     $list[$key]['comment_total'] = Db::table('article_comment')->where(['article_id' => $val['id']])->count();
@@ -54,8 +64,9 @@ class Article extends Controller
             $data['demoin'] = Config::get('oss.domain');
             $this->success('请求成功',null,$data);
         }
-
-        return view('index');
+        
+        $articleCate = Db::table('article_cate')->where(['pid' => 1, 'status' => 1])->select();
+        return view('index',['check' => $this->check, 'articleCate' => $articleCate]);
     }
     
     public function detail()
@@ -93,7 +104,7 @@ class Article extends Controller
             }
         }
 
-        return view('detail',['articleInfo' => $articleInfo,'commentList' => $commentList]);
+        return view('detail',['articleInfo' => $articleInfo,'commentList' => $commentList ,'check' => $this->check]);
     }
     
     public function comment()

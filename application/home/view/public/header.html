@@ -2,20 +2,21 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>首页_林晓聪个人博客 - 一个站在web前端设计之路的女技术员个人博客网站</title>
-<meta name="keywords" content="个人博客,杨青个人博客,个人博客模板,杨青" />
-<meta name="description" content="杨青个人博客，是一个站在web前端设计之路的女程序员个人网站，提供个人博客模板免费资源下载的个人原创网站。" />
+<title>首页_林晓聪博客 - 一个站在web后端开发之路的男技术员个人博客网站</title>
+<meta name="keywords" content="林晓聪,博客,林晓聪博客,林晓聪个人博客,小说,图片,美女图片,性感美女" />
+<meta name="description" content="林晓聪个人博客，是一个站在web后端开发之路的男程序员个人网站，提供技术文章、小说、图片分享的个人原创网站。" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="__STATIC__/home/common/bootstrap/4.0.0/css/bootstrap.css" rel="stylesheet">
 <link href="__STATIC__/home/common/layui/2.4.5/css/layui.css" rel="stylesheet">
 <link href="__STATIC__/home/css/base.css" rel="stylesheet">
 <link href="__STATIC__/home/css/index.css" rel="stylesheet">
 <link href="__STATIC__/home/css/m.css" rel="stylesheet">
 <script type="text/javascript" src="__STATIC__/home/common/jquery/3.3.1/jquery-3.3.1.min.js"></script> 
+<script type="text/javascript" src="__STATIC__/home/common/bootstrap/4.0.0/js/bootstrap.min.js"></script> 
 <script type="text/javascript" src="__STATIC__/home/common/layui/2.4.5/layui.js"></script> 
 <!--[if lt IE 9]>
 <script src="js/modernizr.js"></script>
 <![endif]-->
-<script src="__STATIC__/home/js/page.js"></script>
 </head>
 <body>
 <header>
@@ -23,11 +24,12 @@
     <div class="logo"><a href="/">林晓聪博客</a></div>
     <h2 id="mnavh"><span class="navicon"></span></h2>
     <ul id="starlist">
-      <li><a href="/">网站首页</a></li>
-      <li><a href="/home/images/index">图片</a></li>
-      <li><a href="/home/article/index">小说</a></li>
-      <li><a href="/home/about/index">关于我</a></li>
-      <li><a href="/home/message/index">留言</a></li>
+      <li><a {if $check eq 1} style='color:red;' {/if} href="/">网站首页</a></li>
+      <li><a {if $check eq 6} style='color:red;' {/if} href="/home/article/index">慢生活</a></li>
+      <li><a {if $check eq 2} style='color:red;' {/if} href="/home/images/index">图片</a></li>
+      <li><a {if $check eq 3} style='color:red;' {/if} href="/home/fiction/index">小说</a></li>
+      <li><a {if $check eq 4} style='color:red;' {/if} href="/home/about/index">关于我</a></li>
+      <li><a {if $check eq 5} style='color:red;' {/if} href="/home/message/index">留言</a></li>
     </ul>
   </div>
   <script>

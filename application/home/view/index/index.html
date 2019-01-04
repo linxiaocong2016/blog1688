@@ -1,26 +1,108 @@
+<style>
+  /* 头部轮播 */
+    .carousel-inner img {
+        width: 100%;
+  /*      height: 100%;*/
+        max-height: 300px;
+    }
+    /* 中部轮播 */
+    .carousel-inner-center img {
+      width: 100%;
+/*      height: 100%;*/
+      max-height: 150px;
+    }
+    /* 底部轮播 */
+    .carousel-inner-bottom img {
+      width: 100%;
+/*      height: 100%;*/
+      max-height: 150px;
+    }
+</style>
 <article>
+    <div id="demo" class="carousel slide" data-ride="carousel" style="margin-top:20px;">
+      <!-- 指示符 -->
+      <ul class="carousel-indicators">
+        <li data-target="#demo" data-slide-to="0" class="active"></li>
+        <li data-target="#demo" data-slide-to="1"></li>
+        <li data-target="#demo" data-slide-to="2"></li>
+      </ul>
+      <!-- 轮播图片 -->
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="__STATIC__/home/images/top_image1.jpg">
+          <div class="carousel-caption">
+            <h3 class="h3">广告招募</h3>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="__STATIC__/home/images/top_image2.jpg">
+          <div class="carousel-caption">
+            <h3 class="h3">广告招募</h3>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="__STATIC__/home/images/top_image3.jpg">
+          <div class="carousel-caption">
+            <h3 class="h3">广告招募</h3>
+          </div>
+        </div>
+      </div>
+      <!-- 左右切换按钮 -->
+      <a class="carousel-control-prev" href="#demo" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </a>
+      <a class="carousel-control-next" href="#demo" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </a>
+    </div>
+    
   <div class="pics">
     <ul>
-      <li><i><a href="/"><img src="__STATIC__/home/images/t01.jpg"></a></i><span>这组图片中的静物等非常的日系</span></li>
-      <li><i><a href="/"><img src="__STATIC__/home/images/t04.jpg"></a></i><span>这组图片中的静物等非常的日系</span></li>
-      <li><i><a href="/"><img src="__STATIC__/home/images/t03.jpg"></a></i><span>这组图片中的静物等非常的日系</span></li>
+      <li><i><a><img src="__STATIC__/home/images/t01.jpg"></a></i><span>这组图片中的静物等非常的日系</span></li>
+      <li><i><a><img src="__STATIC__/home/images/t04.jpg"></a></i><span>这组图片中的静物等非常的日系</span></li>
+      <li><i><a><img src="__STATIC__/home/images/t03.jpg"></a></i><span>这组图片中的静物等非常的日系</span></li>
     </ul>
   </div>
   <div class="blank"></div>
   <div class="leftbox">
     <div class="tuijian">
-      <h2 class="hometitle"><!--<span><a href="/">模板分享</a><a href="/">学无止境</a><a href="/">慢生活</a><a href="#" onclick="recommendList(1)">热门标签</a></span>-->特别推荐</h2>
+      <h2 class="hometitle">
+          <!--<span>
+          <a href="/">模板分享</a><a href="/">学无止境</a>
+          <a href="/">慢生活</a><a href="#" onclick="recommendList(1)">热门标签</a>
+          </span>-->
+          特别推荐</h2>
       <ul>
 
       </ul>
     </div>
     <div class="blank"></div>
-    <div class="layui-carousel" id="ad1">
-        <div carousel-item>
-            <div><a href="/"><img src="__STATIC__/home/images/ad_center.jpg"></a></div>
-            <div><a href="/"><img src="__STATIC__/home/images/ad_center.jpg"></a></div>
+    <!--中部轮播 start-->
+    <div id="demoCenter" class="carousel slide" data-ride="carousel">
+      <!-- 指示符 -->
+      <ul class="carousel-indicators">
+        <li data-target="#demoCenter" data-slide-to="0" class="active"></li>
+        <li data-target="#demoCenter" data-slide-to="1"></li>
+      </ul>
+      <!-- 轮播图片 -->
+      <div class="carousel-inner-center">
+        <div class="carousel-item active">
+          <img src="__STATIC__/home/images/top_image1.jpg">
+          <div class="carousel-caption">
+            <h3>广告招募（this is title）</h3>
+            <p>广告招募(this is description)</p>
+          </div>
         </div>
+        <div class="carousel-item">
+          <img src="__STATIC__/home/images/top_image2.jpg">
+          <div class="carousel-caption">
+            <h3>广告招募（this is title）</h3>
+            <p>广告招募(this is description)</p>
+          </div>
+        </div>
+      </div>
     </div>
+    <!--中部轮播 end-->
       <!-- 条目中可以是任意内容，如：<img src=""> -->
     <div class="newblogs">
       <h2 class="hometitle">最新文章</h2>
@@ -32,12 +114,32 @@
       </div>
       <i class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop" style="font-size: 100px; color: #009688;position:fixed;top:40%;left:50%;transform:translateX(-50%) translateY(-40%);display: none;"></i>
     </div>
-    <div class="layui-carousel" id="ad4">
-        <div carousel-item>
-            <div><a href="/"><img src="__STATIC__/home/images/ad_center.jpg"></a></div>
-            <div><a href="/"><img src="__STATIC__/home/images/ad_center.jpg"></a></div>
+    <!--底部轮播 start-->
+    <div id="demoBottom" class="carousel slide" data-ride="carousel" style="margin-bottom:20px;">
+      <!-- 指示符 -->
+      <ul class="carousel-indicators">
+        <li data-target="#demoBottom" data-slide-to="0" class="active"></li>
+        <li data-target="#demoBottom" data-slide-to="1"></li>
+      </ul>
+      <!-- 轮播图片 -->
+      <div class="carousel-inner-bottom">
+        <div class="carousel-item active">
+          <img src="__STATIC__/home/images/top_image1.jpg">
+          <div class="carousel-caption">
+            <h3>广告招募（this is title）</h3>
+            <p>广告招募(this is description)</p>
+          </div>
         </div>
+        <div class="carousel-item">
+          <img src="__STATIC__/home/images/top_image2.jpg">
+          <div class="carousel-caption">
+            <h3>广告招募（this is title）</h3>
+            <p>广告招募(this is description)</p>
+          </div>
+        </div>
+      </div>
     </div>
+    <!--底部轮播 end-->
   </div>
   <div class="rightbox">
     <div class="aboutme">
@@ -46,11 +148,11 @@
       <div class="ab_con">
         <p>网名：DanceSmile | 即步非烟</p>
         <p>职业：PHP高级工程师、架构师 </p>
-        <p>籍贯：广东省—广州市</p>
+        <p>籍贯：广东省</p>
         <p>邮箱：735207034@qq.com</p>
       </div>
     </div>
-    <div class="blank"></div>
+    <!--<div class="blank"></div>
     <div class="search">
       <form action="/e/search/index.php" method="post" name="searchform" id="searchform">
         <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
@@ -59,7 +161,7 @@
         <input name="tbname" value="news" type="hidden">
         <input name="Submit" class="input_submit" value="搜索" type="submit">
       </form>
-    </div>
+    </div>-->
     <div class="blank"></div>
     <div class="layui-carousel" id="ad2">
         <div carousel-item>
@@ -168,14 +270,14 @@
     //最新文章
     function newList(data,callback){
         var callback = callback || function(){}
-        $('.layui-icon').show()
+        $('.layui-anim-loop').show()
         data.pageSize = 8;
         data.type = '';
         $.ajax({
             url:'/home/index/index',
             type:'POST',
             data:data,
-            async:true,
+            async:false,
             success:function(res){
                 if(res.code==1){
                     var list = res.data.list
@@ -199,16 +301,16 @@
                             str += '</div>';
                             str += '</li>';
                         }
-                        $('.layui-icon').hide()
+                        $('.layui-anim-loop').hide()
                         $('.newblogs > ul').html(str)
                     }else{
-                        $('.layui-icon').hide()
+                        $('.layui-anim-loop').hide()
                         $('#page').hide()
                         $('.newblogs > ul').html('暂无数据~~！')
                     }
                     callback(res)
                 }else{
-                    $('.layui-icon').hide()
+                    $('.layui-anim-loop').hide()
                     alert(res.msg)
                 }
             }
@@ -253,24 +355,13 @@ layui.use(['carousel','laypage', 'layer'], function(){
   ,laypage = layui.laypage
   ,layer = layui.layer;
   
-  //左则上面
-  carousel.render({
-    elem: '#ad1'
-    ,width: '100%' 
-    ,height:'150px'
-    ,arrow: 'hover' //切换箭头默认显示状态always（始终显示） hover（悬停显示）none（始终不显示）
-    ,indicator:'none'//指示器位置 inside（容器内部）outside（容器外部）none（不显示）
-    ,anim: 'default' //轮播切换动画方式 default（左右切换）updown（上下切换）fade（渐隐渐显切换）
-    ,interval:5000
-  });
-  
   //右则上面
   carousel.render({
     elem: '#ad2'
     ,width: '100%' 
     ,height:'200px'
-    ,arrow: 'none' //切换箭头默认显示状态always（始终显示） hover（悬停显示）none（始终不显示）
-    ,indicator:'inside'//指示器位置 inside（容器内部）outside（容器外部）none（不显示）
+    ,arrow: 'hover' //切换箭头默认显示状态always（始终显示） hover（悬停显示）none（始终不显示）
+    ,indicator:'none'//指示器位置 inside（容器内部）outside（容器外部）none（不显示）
     ,anim: 'fade' //轮播切换动画方式 default（左右切换）updown（上下切换）fade（渐隐渐显切换）
     ,interval:5000
   });
@@ -283,17 +374,6 @@ layui.use(['carousel','laypage', 'layer'], function(){
     ,arrow: 'hover' //切换箭头默认显示状态always（始终显示） hover（悬停显示）none（始终不显示）
     ,indicator:'none'//指示器位置 inside（容器内部）outside（容器外部）none（不显示）
     ,anim: 'default' //轮播切换动画方式 default（左右切换）updown（上下切换）fade（渐隐渐显切换）
-    ,interval:5000
-  });
-  
-  //左则下面
-  carousel.render({
-    elem: '#ad4'
-    ,width: '100%' 
-    ,height:'155px'
-    ,arrow: 'none' //切换箭头默认显示状态always（始终显示） hover（悬停显示）none（始终不显示）
-    ,indicator:'inside'//指示器位置 inside（容器内部）outside（容器外部）none（不显示）
-    ,anim: 'fade' //轮播切换动画方式 default（左右切换）updown（上下切换）fade（渐隐渐显切换）
     ,interval:5000
   });
   

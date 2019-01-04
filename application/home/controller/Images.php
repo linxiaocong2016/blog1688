@@ -10,12 +10,17 @@ use think\image;
 
 class Images extends Controller
 {
+    
+    public $check = 2;
+
+
     public function index()
     {
         if(Request::instance()->isPost()){
             $page = Request::instance()->post('page',1);
             $pageSize = Request::instance()->post('pageSize',6);
             $type = Request::instance()->post('type');
+            $cat_id = Request::instance()->post('cat_id');
             
             $where = [];
             $order = ['i.id' => 'desc'];
@@ -24,6 +29,9 @@ class Images extends Controller
             }
             if($type == 'ranking'){
                 $order = ['clicks' => 'desc'];
+            }
+            if($cat_id){
+                $where['i.cat_id'] = $cat_id;
             }
             
             $count = Db::table('image')->alias('i')->where($where)->count();
@@ -49,7 +57,8 @@ class Images extends Controller
             $this->success('请求成功',null,$data);
         }
 
-        return view('index');
+        $imageCate = Db::table('image_cate')->where(['pid' => 2, 'status' => 1])->select();
+        return view('index',['check' => $this->check, 'imageCate' => $imageCate]);
     }
     
     public function detail()
@@ -68,7 +77,7 @@ class Images extends Controller
         $imageInfo['addtime'] = date('Y-m-d', $imageInfo['addtime']);
         $imageInfo['keyword'] = $imageInfo['keyword'] ? explode(',', $imageInfo['keyword']) : '';
         $imageInfo['image_detail'] = json_decode($imageInfo['image_detail'],TRUE);
-//echo '<pre />';print_r($imageInfo);exit;
-        return view('detail',['imageInfo' => $imageInfo, 'demoin' => Config::get('oss.domain')]);
+
+        return view('detail',['imageInfo' => $imageInfo, 'demoin' => Config::get('oss.domain'), 'check' => $this->check]);
     }
 }

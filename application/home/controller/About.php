@@ -10,6 +10,6 @@ class About extends Controller
 {
     public function index()
     {
-        return view('index');
+        return view('index',['check' => 4]);
     }
 }
